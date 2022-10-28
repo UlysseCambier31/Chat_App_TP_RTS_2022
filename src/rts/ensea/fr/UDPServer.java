@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 /**
  * This class represents a server for receiving udp datagram packets.
- * The server uses a socket which is listening ona a port chosen by the user.
+ * The server uses a socket which is listening on a port chosen by the user.
  * This class heavily rely on DatagramPacket and DatagramSocket classes.
  *
  * Example : UDPServer server = new UDPServer(8080); Which is equivalent to UDPServer server = new UDPServer(); as default issued port will be 8080.
