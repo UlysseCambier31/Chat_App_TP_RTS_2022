@@ -7,8 +7,16 @@ import java.net.InetAddress;
 import java.net.SocketException;
 
 /**
- * UDP Server class.
- * Define a UDP Server Object capable of receiving UDP packets.
+ * This class represents a server for receiving udp datagram packets.
+ * The server uses a socket which is listening ona a port chosen by the user.
+ * This class heavily rely on DatagramPacket and DatagramSocket classes.
+ *
+ * Example : UDPServer server = new UDPServer(8080); Which is equivalent to UDPServer server = new UDPServer(); as default issued port will be 8080.
+ *
+ * @author Ulysse Cambier, Thibaut Lefebvre
+ *
+ * @see DatagramSocket
+ * @see DatagramPacket
  */
 public class UDPServer {
     private int port;
@@ -16,21 +24,24 @@ public class UDPServer {
     private boolean isUp;
 
     /**
-     * UPDServer Constructor with port argument.
-     * @param port It is the port on which the server will listen.
+     * Constructs a udp server listening on the port issued by the user.
+     * @param port is a number port on which the server will listen.
      */
     public UDPServer(int port) {
         this.port = port;
     }
 
     /**
-     * UDPServer Constructor without argument.
-     * Will automatically listen on 8080.
+     * Constructs a udp server listening on the default port 8080.
      */
     public UDPServer() {
         this.port = 8080;
     }
 
+    /**
+     * Start an UDP server on port provided by args[0].
+     * @param args
+     */
     public static void main(String[] args) {
         int p = Integer.parseInt(args[0]);
         UDPServer server = new UDPServer(p);
@@ -42,7 +53,7 @@ public class UDPServer {
     }
 
     /**
-     * The launch method allow the user to start the UDPServer.
+     * Allow the user to start the UDP Server from a UDPServer object.
      * When the server is online it tries to decode received packet until it is closed with the stop method.
      * @throws IOException
      */
@@ -54,12 +65,12 @@ public class UDPServer {
     }
 
     /**
-     * The stop method allow the user to stop the UDPServer.
+     * Allow the user to stop the UDP Server from a UDPServer object.
      */
     public void stop(){ socket.close(); }
 
     /**
-     * The method decodePacket will decode the packet read on the socket.
+     * Decode the packet read on the socket.
      * @throws IOException
      */
     public void decodePacket() throws IOException {
@@ -73,6 +84,9 @@ public class UDPServer {
         System.out.println(clientAddress + " " + clientPort + " " + dataReceived);
     }
 
+    /**
+     * @return UDPServer state
+     */
     @Override
     public String toString() {
         return "Server is closed : "+socket.isClosed() + "/ Listening on port "+port;
