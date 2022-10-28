@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.time.LocalDateTime;
 
 /**
  * This class represents a server for receiving udp datagram packets.
@@ -43,7 +44,13 @@ public class UDPServer {
      * @param args
      */
     public static void main(String[] args) {
-        int p = Integer.parseInt(args[0]);
+        int p;
+        try {
+            p = Integer.parseInt(args[0]);
+        } catch(ArrayIndexOutOfBoundsException e) {
+            System.out.println("wrn: No value provided for port, using 8080");
+            p=8080;
+        }
         UDPServer server = new UDPServer(p);
         try {
             server.launch();
@@ -54,13 +61,22 @@ public class UDPServer {
 
     /**
      * Allow the user to start the UDP Server from a UDPServer object.
-     * When the server is online it tries to decode received packet until it is closed with the stop method.
      * @throws IOException
      */
     public void launch() throws IOException {
         socket = new DatagramSocket(port);
+        UDPHandler();
+    }
+
+    /**
+     * Handle the reception of UDP packet on the server.
+     * By default tries to decode received packet until server is closed with the stop method.
+     * @throws IOException
+     */
+    public void UDPHandler() throws IOException {
         while(!socket.isClosed()) {
-            decodePacket();
+            DecodedPacket packet = decodePacket();
+            System.out.println(packet);
         }
     }
 
@@ -72,8 +88,9 @@ public class UDPServer {
     /**
      * Decode the packet read on the socket.
      * @throws IOException
+     * @return the decoded packet information.
      */
-    public void decodePacket() throws IOException {
+    public DecodedPacket decodePacket() throws IOException {
         int maxEncodedSize = 1024;
         byte[] buffer = new byte[maxEncodedSize];
         DatagramPacket packet= new DatagramPacket(buffer,buffer.length);
@@ -81,7 +98,8 @@ public class UDPServer {
         InetAddress clientAddress = packet.getAddress();
         int clientPort = packet.getPort();
         String dataReceived = new String(packet.getData(),packet.getOffset(), maxEncodedSize);
-        System.out.println(clientAddress + " " + clientPort + " " + dataReceived);
+        LocalDateTime now = LocalDateTime.now();
+        return new DecodedPacket(clientPort,clientAddress,dataReceived,now);
     }
 
     /**
