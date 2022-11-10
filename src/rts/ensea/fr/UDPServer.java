@@ -20,9 +20,8 @@ import java.time.LocalDateTime;
  * @see DatagramPacket
  */
 public class UDPServer {
-    private final int port;
-    private DatagramSocket socket;
-    private boolean isUp;
+    protected final int port;
+    protected DatagramSocket socket;
 
     /**
      * Constructs a udp server listening on the port issued by the user.
@@ -33,14 +32,14 @@ public class UDPServer {
     }
 
     /**
-     * Constructs a udp server listening on the default port 8080.
+     * Constructs an udp server listening on the default port 8080.
      */
     public UDPServer() {
         this.port = 8080;
     }
 
     /**
-     * Start an UDP server on port provided by args[0].
+     * Start a UDP server on port provided by args[0].
      * @param args usual arguments of a main function.
      */
     public static void main(String[] args) {
