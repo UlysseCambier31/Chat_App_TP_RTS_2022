@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
  * @see DatagramPacket
  */
 public class UDPServer {
-    private int port;
+    private final int port;
     private DatagramSocket socket;
     private boolean isUp;
 
@@ -41,7 +41,7 @@ public class UDPServer {
 
     /**
      * Start an UDP server on port provided by args[0].
-     * @param args
+     * @param args usual arguments of a main function.
      */
     public static void main(String[] args) {
         int p;
@@ -55,13 +55,13 @@ public class UDPServer {
         try {
             server.launch();
         } catch (IOException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
     /**
      * Allow the user to start the UDP Server from a UDPServer object.
-     * @throws IOException
+     * @throws IOException throws IOException.
      */
     public void launch() throws IOException {
         socket = new DatagramSocket(port);
@@ -71,7 +71,7 @@ public class UDPServer {
     /**
      * Handle the reception of UDP packet on the server.
      * By default tries to decode received packet until server is closed with the stop method.
-     * @throws IOException
+     * @throws IOException throws IOException.
      */
     public void UDPHandler() throws IOException {
         while(!socket.isClosed()) {
@@ -87,7 +87,7 @@ public class UDPServer {
 
     /**
      * Decode the packet read on the socket.
-     * @throws IOException
+     * @throws IOException throws IOException.
      * @return the decoded packet information.
      */
     public DecodedPacket decodePacket() throws IOException {
