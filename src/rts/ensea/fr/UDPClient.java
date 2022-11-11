@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
+import java.nio.ByteBuffer;
 
 /**
  * This class represents a client for sending udp datagram packets.
@@ -37,7 +38,8 @@ public class UDPClient {
      */
     public void send(String request) throws IOException {
         DatagramSocket socket = new DatagramSocket(port);
-        byte[] buf = request.getBytes();
+        String ending_char = "\r\n";
+        byte[] buf = ByteBuffer.allocate(request.getBytes().length+ending_char.getBytes().length).put(request.getBytes()).put(ending_char.getBytes()).array();
         DatagramPacket packet = new DatagramPacket(buf,buf.length,address,port);
         socket.send(packet);
     }
