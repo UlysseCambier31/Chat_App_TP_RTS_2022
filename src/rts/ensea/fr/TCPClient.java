@@ -3,6 +3,7 @@ package rts.ensea.fr;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 
 public class TCPClient {
@@ -34,6 +35,29 @@ public class TCPClient {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
         String dataReceived = String.valueOf(reader);
         System.out.println(dataReceived);
+    }
+
+    /**
+     * Start an tcp Client sending packet to an address:port provided by args[1] and args[0].
+     * @param args usual main function argument.
+     */
+    public static void main(String[] args) {
+        TCPClient client = null;
+        try {
+            client = new TCPClient(Integer.parseInt(args[1]),InetAddress.getByName(args[0]));
+        } catch(ArrayIndexOutOfBoundsException | UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String request;
+        try {
+            request = reader.readLine();
+            assert client != null;
+            client.send(request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
