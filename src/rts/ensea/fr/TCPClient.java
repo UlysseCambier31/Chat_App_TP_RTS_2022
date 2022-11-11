@@ -1,9 +1,9 @@
 package rts.ensea.fr;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 public class TCPClient {
     private final int port;
@@ -26,8 +26,14 @@ public class TCPClient {
     public void send(String request) throws IOException {
         Socket socket = new Socket(address,port);
         OutputStream output = socket.getOutputStream();
-        byte[] buf = request.getBytes();
+        String ending_char = "\r\n";
+        byte[] buf = ByteBuffer.allocate(request.getBytes().length+ending_char.getBytes().length).put(request.getBytes()).put(ending_char.getBytes()).array();
         output.write(buf);
+        output.flush();
+        InputStream input = socket.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        String dataReceived = String.valueOf(reader);
+        System.out.println(dataReceived);
     }
 
 }
