@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 /**
  * This class represents a server for receiving udp datagram packets.
- * The server uses a socket which is listening ona a port chosen by the user.
+ * The server uses a socket which is listening on a port chosen by the user.
  * This class heavily rely on DatagramPacket and DatagramSocket classes.
  *
  * Example : UDPServer server = new UDPServer(8080); Which is equivalent to UDPServer server = new UDPServer(); as default issued port will be 8080.
@@ -20,9 +20,8 @@ import java.time.LocalDateTime;
  * @see DatagramPacket
  */
 public class UDPServer {
-    private int port;
-    private DatagramSocket socket;
-    private boolean isUp;
+    protected final int port;
+    protected DatagramSocket socket;
 
     /**
      * Constructs a udp server listening on the port issued by the user.
@@ -33,15 +32,15 @@ public class UDPServer {
     }
 
     /**
-     * Constructs a udp server listening on the default port 8080.
+     * Constructs an udp server listening on the default port 8080.
      */
     public UDPServer() {
         this.port = 8080;
     }
 
     /**
-     * Start an UDP server on port provided by args[0].
-     * @param args
+     * Start a UDP server on port provided by args[0].
+     * @param args usual arguments of a main function.
      */
     public static void main(String[] args) {
         int p;
@@ -55,13 +54,13 @@ public class UDPServer {
         try {
             server.launch();
         } catch (IOException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
     /**
      * Allow the user to start the UDP Server from a UDPServer object.
-     * @throws IOException
+     * @throws IOException throws IOException.
      */
     public void launch() throws IOException {
         socket = new DatagramSocket(port);
@@ -71,7 +70,7 @@ public class UDPServer {
     /**
      * Handle the reception of UDP packet on the server.
      * By default tries to decode received packet until server is closed with the stop method.
-     * @throws IOException
+     * @throws IOException throws IOException.
      */
     public void UDPHandler() throws IOException {
         while(!socket.isClosed()) {
@@ -87,7 +86,7 @@ public class UDPServer {
 
     /**
      * Decode the packet read on the socket.
-     * @throws IOException
+     * @throws IOException throws IOException.
      * @return the decoded packet information.
      */
     public DecodedPacket decodePacket() throws IOException {
