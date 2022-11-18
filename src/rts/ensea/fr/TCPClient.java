@@ -41,6 +41,14 @@ public class TCPClient {
         System.out.println(dataReceived);
     }
 
+    public void TCPHandler(BufferedReader reader) throws IOException {
+        String request;
+        while((request = reader.readLine()) != null) {
+            Socket socket = send(request);
+            awaitEcho(socket);
+        }
+    }
+
     /**
      * Start an tcp Client sending packet to an address:port provided by args[1] and args[0].
      * @param args usual main function argument.
@@ -54,13 +62,8 @@ public class TCPClient {
         }
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String request;
         try {
-            while((request = reader.readLine()) != null) {
-                assert client != null;
-                Socket socket = client.send(request);
-                client.awaitEcho(socket);
-            }
+            client.TCPHandler(reader);
         } catch (IOException e) {
             e.printStackTrace();
         }
