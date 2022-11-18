@@ -21,15 +21,17 @@ import java.nio.ByteBuffer;
 public class UDPClient {
     private final int port;
     private final InetAddress address;
+    private final DatagramSocket socket;
 
     /**
      * Constructs a udp client which send packets to an address:port chosen by the user.
      * @param port is a number port to which the client will send packet toward.
      * @param address is an address to which the client will send packet toward.
      */
-    public UDPClient(int port, InetAddress address) {
+    public UDPClient(int port, InetAddress address) throws SocketException {
         this.port = port;
         this.address = address;
+        this.socket = new DatagramSocket(port);
     }
 
     /**
@@ -37,7 +39,6 @@ public class UDPClient {
      * @param request is a string containing the request.
      */
     public void send(String request) throws IOException {
-        DatagramSocket socket = new DatagramSocket(port);
         String ending_char = "\r\n";
         byte[] buf = ByteBuffer.allocate(request.getBytes().length+ending_char.getBytes().length).put(request.getBytes()).put(ending_char.getBytes()).array();
         DatagramPacket packet = new DatagramPacket(buf,buf.length,address,port);
@@ -51,7 +52,7 @@ public class UDPClient {
         UDPClient client = null;
         try {
             client = new UDPClient(Integer.parseInt(args[1]),InetAddress.getByName(args[0]));
-        } catch(ArrayIndexOutOfBoundsException | UnknownHostException e) {
+        } catch(ArrayIndexOutOfBoundsException | UnknownHostException | SocketException e) {
             e.printStackTrace();
         }
 
