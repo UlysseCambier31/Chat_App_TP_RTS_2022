@@ -1,11 +1,20 @@
 package rts.ensea.fr;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.nio.ByteBuffer;
 
+/**
+ * This class represents a client for sending tcp packets.
+ * The client uses a socket to send packet to an host:port chosen by the user.
+ * This class heavily rely on the Socket class.
+ *
+ * Example : client = new TCPClient(port,ipAddress);
+ *
+ * @author Ulysse Cambier, Thibaut Lefebvre
+ *
+ * @see Socket
+ */
 public class TCPClient {
     private final int port;
     private final InetAddress address;
@@ -23,6 +32,8 @@ public class TCPClient {
     /**
      * Send a string request over the client socket.
      * @param request is a string containing the request.
+     * @return the connection socket.
+     * @throws IOException throws IOException.
      */
     public Socket send(String request) throws IOException {
         Socket socket = new Socket(address,port);
@@ -34,6 +45,11 @@ public class TCPClient {
         return socket;
     }
 
+    /**
+     * Await for an "echo\r\n" from the server.
+     * @param socket the connection socket
+     * @throws IOException throws IOException.
+     */
     public void awaitEcho(Socket socket) throws IOException {
         InputStream input = socket.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
@@ -41,6 +57,12 @@ public class TCPClient {
         System.out.println(dataReceived);
     }
 
+    /**
+     * Handle the sending of TCP packet on the server.
+     * By default tries to send packets until the connection is closed with Ctrl+D.
+     * @param reader the input BufferedReader.
+     * @throws IOException throws IOException.
+     */
     public void TCPHandler(BufferedReader reader) throws IOException {
         String request;
         while((request = reader.readLine()) != null) {
@@ -63,6 +85,7 @@ public class TCPClient {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
+            assert client != null;
             client.TCPHandler(reader);
         } catch (IOException e) {
             e.printStackTrace();
