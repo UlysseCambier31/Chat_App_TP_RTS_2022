@@ -40,6 +40,7 @@ public class TCPClient {
         System.out.println(dataReceived);
     }
 
+    /**/
     public void TCPHandler(BufferedReader reader) throws IOException {
         while (!socket.isClosed()) {
             String request;
