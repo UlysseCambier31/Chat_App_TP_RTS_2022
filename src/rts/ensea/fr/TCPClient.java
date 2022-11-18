@@ -33,7 +33,7 @@ public class TCPClient {
         output.flush();
         InputStream input = socket.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-        String dataReceived = String.valueOf(reader);
+        String dataReceived = reader.readLine();
         System.out.println(dataReceived);
     }
 
