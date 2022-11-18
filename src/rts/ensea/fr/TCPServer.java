@@ -89,7 +89,7 @@ public class TCPServer{
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
         InetAddress clientAddress = socket.getInetAddress();
         int clientPort = socket.getLocalPort();
-        String dataReceived = String.valueOf(reader);
+        String dataReceived = reader.readLine();
         LocalDateTime now = LocalDateTime.now();
         return new DecodedPacket(clientPort,clientAddress,dataReceived,now,connectionSocket);
     }
