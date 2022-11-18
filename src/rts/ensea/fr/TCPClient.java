@@ -50,15 +50,16 @@ public class TCPClient {
         }
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String request = null;
-        while(!request.contains("^D")) {
-            try {
-                request = reader.readLine();
-                assert client != null;
-                client.send(request);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        String request;
+        try {
+            request = reader.readLine();
+                while(!request.contains("^D")) {
+                    assert client != null;
+                    client.send(request);
+                    request = reader.readLine();
+                }
+        } catch (IOException e) {
+               e.printStackTrace();
         }
 
     }
