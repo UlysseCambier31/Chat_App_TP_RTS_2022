@@ -40,14 +40,15 @@ public class TCPClient {
         System.out.println(dataReceived);
     }
 
-    public void TCPHandler() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    /**/
+    public void TCPHandler(BufferedReader reader) throws IOException {
         while (!socket.isClosed()) {
             String request;
-            if((request = reader.readLine())!="^D") {
+            try{
+                request = reader.readLine();
                 send(request);
                 awaitEcho();
-            } else {
+            } catch (NullPointerException e) {
                 socket.close();
             }
         }
@@ -61,7 +62,8 @@ public class TCPClient {
         TCPClient client;
         try {
             client = new TCPClient(Integer.parseInt(args[1]),InetAddress.getByName(args[0]));
-            client.TCPHandler();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            client.TCPHandler(reader);
         } catch(ArrayIndexOutOfBoundsException | IOException e) {
             e.printStackTrace();
         }
