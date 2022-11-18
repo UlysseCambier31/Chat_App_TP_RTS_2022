@@ -52,11 +52,9 @@ public class TCPClient {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String request;
         try {
-            request = reader.readLine();
-                while(!request.contains("^D")) {
+                while((request = reader.readLine()) != null) {
                     assert client != null;
                     client.send(request);
-                    request = reader.readLine();
                 }
         } catch (IOException e) {
                e.printStackTrace();
