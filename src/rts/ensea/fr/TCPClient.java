@@ -24,13 +24,17 @@ public class TCPClient {
      * Send a string request over the client socket.
      * @param request is a string containing the request.
      */
-    public void send(String request) throws IOException {
+    public Socket send(String request) throws IOException {
         Socket socket = new Socket(address,port);
         OutputStream output = socket.getOutputStream();
         String ending_char = "\r\n";
         byte[] buf = ByteBuffer.allocate(request.getBytes().length+ending_char.getBytes().length).put(request.getBytes()).put(ending_char.getBytes()).array();
         output.write(buf);
         output.flush();
+        return socket;
+    }
+
+    public void awaitEcho(Socket socket) throws IOException {
         InputStream input = socket.getInputStream();
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));
         String dataReceived = reader.readLine();
@@ -54,7 +58,8 @@ public class TCPClient {
         try {
             while((request = reader.readLine()) != null) {
                 assert client != null;
-                client.send(request);
+                Socket socket = client.send(request);
+                client.awaitEcho(socket);
             }
         } catch (IOException e) {
             e.printStackTrace();
