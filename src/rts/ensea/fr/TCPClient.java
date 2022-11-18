@@ -3,6 +3,7 @@ package rts.ensea.fr;
 import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * This class represents a client for sending tcp packets.
@@ -83,7 +84,7 @@ public class TCPClient {
             e.printStackTrace();
         }
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
         try {
             assert client != null;
             client.TCPHandler(reader);
