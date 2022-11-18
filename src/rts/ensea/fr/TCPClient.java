@@ -32,7 +32,6 @@ public class TCPClient {
         byte[] buf = ByteBuffer.allocate(request.getBytes().length+ending_char.getBytes().length).put(request.getBytes()).put(ending_char.getBytes()).array();
         output.write(buf);
         output.flush();
-        awaitEcho();
     }
     public void awaitEcho() throws IOException {
         InputStream input = socket.getInputStream();
@@ -42,11 +41,12 @@ public class TCPClient {
     }
 
     public void TCPHandler() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         while (!socket.isClosed()) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             String request;
-            if((request = reader.readLine())!=null) {
+            if((request = reader.readLine())!="^D") {
                 send(request);
+                awaitEcho();
             } else {
                 socket.close();
             }
