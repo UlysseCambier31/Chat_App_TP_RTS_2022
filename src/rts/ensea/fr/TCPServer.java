@@ -67,9 +67,9 @@ public class TCPServer{
      */
     public void TCPHandler() throws IOException {
         while(!socket.isClosed()){
-            DecodedPacket packet = decodePacket();
-            System.out.println(packet);
-            answer(packet.getConnectionSocket());
+            Socket connectionSocket = socket.accept();
+            ConnectionThread Thread = new ConnectionThread(connectionSocket);
+            Thread.start();
         }
     }
 
@@ -77,51 +77,6 @@ public class TCPServer{
      * Allow the user to stop the TCP Server from a TCPServer object.
      */
     public void stop() throws IOException { socket.close(); }
-
-    /**
-     * Decode the packet read on the socket.
-     * @throws IOException throws IOException.
-     * @return the decoded packet information.
-     */
-    public DecodedPacket decodePacket() throws IOException {
-        Socket connectionSocket = socket.accept();
-        InputStream input = connectionSocket.getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-        InetAddress clientAddress = socket.getInetAddress();
-        int clientPort = socket.getLocalPort();
-        String dataReceived = reader.readLine();
-        LocalDateTime now = LocalDateTime.now();
-        return new DecodedPacket(clientPort,clientAddress,dataReceived,now,connectionSocket);
-    }
-
-    /**
-     *
-     * Answer "echo\r\n" to the client on the socket.
-     *
-     * @param connectionSocket the connection socket.
-     * @throws IOException throws IOException.
-     */
-    public void answer(Socket connectionSocket) throws IOException {
-        OutputStream output = connectionSocket.getOutputStream();
-        PrintWriter writer = new PrintWriter(output, false);
-        writer.print("echo\r\n");
-        writer.flush();
-    }
-
-    /**
-     *
-     * Answer a string to the client on the socket.
-     *
-     * @param connectionSocket the connection socket.
-     * @param answer the string to be answered by the server to the client.
-     * @throws IOException throws IOException.
-     */
-    public void answer(Socket connectionSocket,String answer) throws IOException {
-        OutputStream output = connectionSocket.getOutputStream();
-        PrintWriter writer = new PrintWriter(output, false);
-        writer.print(answer+"\r\n");
-        writer.flush();
-    }
 
     /**
      * @return TCPServer state
