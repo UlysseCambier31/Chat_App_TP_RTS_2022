@@ -42,13 +42,15 @@ public class TCPClient {
     }
 
     public void TCPHandler() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        String request = reader.readLine();
-        while(request != null) {
-            send(request);
-            request = reader.readLine();
+        while (!socket.isClosed()) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            String request;
+            if((request = reader.readLine())!=null) {
+                send(request);
+            } else {
+                socket.close();
+            }
         }
-        socket.close();
     }
 
     /**
