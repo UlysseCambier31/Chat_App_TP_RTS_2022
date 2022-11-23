@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets;
 public class UDPClient {
     private final int port;
     private final InetAddress address;
-    private final DatagramSocket socket;
+    protected final DatagramSocket socket;
 
     /**
      * Constructs a udp client which send packets to an address:port chosen by the user.

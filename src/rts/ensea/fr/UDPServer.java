@@ -20,8 +20,9 @@ import java.time.LocalDateTime;
  * @see DatagramPacket
  */
 public class UDPServer {
-    protected final int port;
+    private final int port;
     protected DatagramSocket socket;
+    protected DecodedPacket packet;
 
     /**
      * Constructs a udp server listening on the port issued by the user.
@@ -64,6 +65,7 @@ public class UDPServer {
      */
     public void launch() throws IOException {
         socket = new DatagramSocket(port);
+        packet = new DecodedPacket(0,null,null,null);
         UDPHandler();
     }
 
@@ -74,7 +76,7 @@ public class UDPServer {
      */
     public void UDPHandler() throws IOException {
         while(!socket.isClosed()) {
-            DecodedPacket packet = decodePacket();
+            packet = decodePacket();
             System.out.println(packet);
         }
     }
@@ -99,6 +101,12 @@ public class UDPServer {
         String dataReceived = new String(packet.getData(),packet.getOffset(), maxEncodedSize);
         LocalDateTime now = LocalDateTime.now();
         return new DecodedPacket(clientPort,clientAddress,dataReceived,now);
+    }
+
+    public void sendPacket(int port,InetAddress address,String data) throws IOException {
+        byte[] buffer = data.getBytes();
+        DatagramPacket answer = new DatagramPacket(buffer, buffer.length, address, port);
+        socket.send(answer);
     }
 
     /**
