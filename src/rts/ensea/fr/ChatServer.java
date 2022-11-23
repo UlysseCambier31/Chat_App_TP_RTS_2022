@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChatServer extends UDPServer{
     private Conversation conversation;
@@ -14,8 +16,9 @@ public class ChatServer extends UDPServer{
     }
 
     public static void main(String[] args) {
-
-        Conversation conversation = new Conversation(null,null);
+        List<User> users = new ArrayList<User>() ;
+        List<Message> messages = new ArrayList<Message>();
+        Conversation conversation = new Conversation(messages,users);
         ChatServer server = new ChatServer(conversation);
         try {
             server.launch();
@@ -26,8 +29,11 @@ public class ChatServer extends UDPServer{
 
     @Override
     public void UDPHandler() throws IOException {
-        super.UDPHandler();
-        onMessage();
+        while(!socket.isClosed()) {
+            packet = super.decodePacket();
+            System.out.println(packet);
+            onMessage();
+        }
     }
 
     public void onMessage() throws IOException {
