@@ -13,7 +13,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "\n User{" +
+        return " User{" +
                 "netInfo=" + netInfo +
                 ", name='" + name + '\'' +
                 '}';

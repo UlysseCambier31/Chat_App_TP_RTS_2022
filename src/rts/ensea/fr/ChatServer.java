@@ -45,14 +45,18 @@ public class ChatServer extends UDPServer{
         Message message = new Message(user,content,time);
         conversation.addUser(user);
         conversation.addMessage(message);
-        System.out.println(conversation);
         sendAll(message);
     }
 
     public void sendMessage(Message message, User user) throws IOException {
         int port = user.getNetInfo().getPort();
         InetAddress address = user.getNetInfo().getAddress();
-        String data = message.getUser().getName()+" : "+message.getContent() + "\n\t" + message.getTime();
+        String s = "$*$";
+        String data = message.getTime()+s+
+                      message.getUser().getNetInfo().getAddress()+s+
+                      message.getUser().getNetInfo().getPort()+s+
+                      message.getUser().getName()+s+
+                      message.getContent();
         super.sendPacket(port,address,data);
     }
 

@@ -3,7 +3,10 @@ package rts.ensea.fr;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ReceiveMessageThread extends  java.lang.Thread{
     private DatagramSocket socket;
@@ -18,7 +21,9 @@ public class ReceiveMessageThread extends  java.lang.Thread{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println(message);
+            if(message!=null) {
+                System.out.println(message);
+            }
         }
     }
 
@@ -27,6 +32,17 @@ public class ReceiveMessageThread extends  java.lang.Thread{
         byte[] buffer = new byte[maxEncodedSize];
         DatagramPacket packet= new DatagramPacket(buffer,buffer.length);
         socket.receive(packet);
-        return new String(packet.getData(),packet.getOffset(), maxEncodedSize);
+        String data = new String(packet.getData(),packet.getOffset(), maxEncodedSize);
+        String[] tmp = data.split("\\$\\*\\$");
+        InetAddress senderIP = InetAddress.getByName(tmp[1].replace("/",""));
+        int senderPort = Integer.parseInt(tmp[2]);
+        System.out.println(socket.getLocalAddress().toString());
+        System.out.println(senderIP.toString());
+        System.out.println(socket.getLocalPort());
+        System.out.println(senderPort);
+        if(!(socket.getLocalAddress().toString().equals(senderIP.toString())&&(socket.getLocalPort()==senderPort))){
+            return tmp[3]+" : "+tmp[4]+"\n\t"+tmp[0];
+        }
+        return null;
     }
 }
