@@ -30,21 +30,12 @@ public class ChatClient extends UDPClient {
             while(true) {
                 request = reader.readLine();
                 client.send(request);
-                String answer = client.awaitAnswer();
-                System.out.println(answer);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public String awaitAnswer() throws IOException {
-        int maxEncodedSize = 1024;
-        byte[] buffer = new byte[maxEncodedSize];
-        DatagramPacket packet= new DatagramPacket(buffer,buffer.length);
-        socket.receive(packet);
-        return new String(packet.getData(),packet.getOffset(), maxEncodedSize);
-    }
     public DatagramSocket getSocket() {
         return socket;
     }
