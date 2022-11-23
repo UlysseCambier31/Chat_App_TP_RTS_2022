@@ -32,7 +32,7 @@ public class UDPClient {
     public UDPClient(int port, InetAddress address) throws SocketException {
         this.port = port;
         this.address = address;
-        this.socket = new DatagramSocket(port);
+        this.socket = new DatagramSocket();
     }
 
     /**
