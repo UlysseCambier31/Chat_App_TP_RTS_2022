@@ -3,10 +3,7 @@ package rts.ensea.fr;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -27,11 +24,15 @@ public class ChatClient extends UDPClient {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
         String request;
         try {
-            request = reader.readLine();
             assert client != null;
-            client.send(request);
-            String answer = client.awaitAnswer();
-            System.out.println(answer);
+            ReceiveMessageThread receiveMessageHandlerThread = new ReceiveMessageThread(client.getSocket());
+            receiveMessageHandlerThread.start();
+            while(true) {
+                request = reader.readLine();
+                client.send(request);
+                String answer = client.awaitAnswer();
+                System.out.println(answer);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,5 +44,8 @@ public class ChatClient extends UDPClient {
         DatagramPacket packet= new DatagramPacket(buffer,buffer.length);
         socket.receive(packet);
         return new String(packet.getData(),packet.getOffset(), maxEncodedSize);
+    }
+    public DatagramSocket getSocket() {
+        return socket;
     }
 }
