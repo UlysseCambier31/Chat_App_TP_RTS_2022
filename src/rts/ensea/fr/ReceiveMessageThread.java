@@ -40,7 +40,7 @@ public class ReceiveMessageThread extends  java.lang.Thread{
         System.out.println(senderIP.toString());
         System.out.println(socket.getLocalPort());
         System.out.println(senderPort);
-        if(!(socket.getLocalAddress().toString().equals(senderIP.toString())&&(socket.getLocalPort()==senderPort))){
+        if(!(InetAddress.getLocalHost().getHostAddress().equals(senderIP.toString())&&(socket.getLocalPort()==senderPort))){
             return tmp[3]+" : "+tmp[4]+"\n\t"+tmp[0];
         }
         return null;
