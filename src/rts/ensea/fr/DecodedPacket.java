@@ -69,6 +69,22 @@ public class DecodedPacket {
         return connectionSocket;
     }
 
+    public InetAddress getAddress() {
+        return address;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
     /**
      * @return a formatted display of the decoded packet information.
      */
