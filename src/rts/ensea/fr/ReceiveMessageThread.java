@@ -36,11 +36,7 @@ public class ReceiveMessageThread extends  java.lang.Thread{
         String[] tmp = data.split("\\$\\*\\$");
         InetAddress senderIP = InetAddress.getByName(tmp[1].replace("/",""));
         int senderPort = Integer.parseInt(tmp[2]);
-        System.out.println(socket.getLocalAddress().toString());
-        System.out.println(senderIP.toString());
-        System.out.println(socket.getLocalPort());
-        System.out.println(senderPort);
-        if(!(InetAddress.getLocalHost().getHostAddress().equals(senderIP.toString())&&(socket.getLocalPort()==senderPort))){
+        if(!(InetAddress.getLocalHost().getHostAddress().equals(senderIP.getHostAddress())&&(socket.getLocalPort()==senderPort))){
             return tmp[3]+" : "+tmp[4]+"\n\t"+tmp[0];
         }
         return null;
