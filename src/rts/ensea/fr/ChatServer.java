@@ -8,7 +8,8 @@ import java.time.format.DateTimeFormatter;
 public class ChatServer extends UDPServer{
     private Conversation conversation;
 
-    public ChatServer(Conversation conversation) {
+    public ChatServer( Conversation conversation) {
+        super(8080);
         this.conversation = conversation;
     }
 

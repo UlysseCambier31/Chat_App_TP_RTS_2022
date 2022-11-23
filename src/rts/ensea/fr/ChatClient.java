@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class ChatClient extends UDPClient {
 
@@ -41,6 +42,6 @@ public class ChatClient extends UDPClient {
         byte[] buffer = new byte[maxEncodedSize];
         DatagramPacket packet= new DatagramPacket(buffer,buffer.length);
         socket.receive(packet);
-        return packet.getData().toString();
+        return new String(packet.getData(),packet.getOffset(), maxEncodedSize);
     }
 }
