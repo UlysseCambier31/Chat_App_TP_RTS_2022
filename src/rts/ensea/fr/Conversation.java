@@ -20,16 +20,26 @@ public class Conversation {
     }
 
     public void addUser(User user) {
-        boolean userExist = false;
-        for (int i=0;i<this.users.size();i++){
-            if(this.users.get(i).equals(user)){
-                userExist = true;
+        boolean userIsNew = true;
+        for (User value : this.users) {
+            if (value.getNetInfo().getAddress().toString().equals(user.getNetInfo().getAddress().toString()) &&
+                    value.getNetInfo().getPort() == user.getNetInfo().getPort()) {
+                userIsNew = false;
+                break;
             }
         }
-        if(!userExist) {this.users.add(user);};
+        if(userIsNew) {this.users.add(user);}
     }
 
     public List<User> getUsers() {
         return users;
+    }
+
+    @Override
+    public String toString() {
+        return "Conversation{" +
+                "messages=" + messages +
+                ", users=" + users +
+                '}';
     }
 }

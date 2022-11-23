@@ -21,6 +21,7 @@ public class ChatClient extends UDPClient {
             e.printStackTrace();
         }
 
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
         String request;
         try {

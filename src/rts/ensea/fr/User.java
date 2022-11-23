@@ -11,6 +11,14 @@ public class User {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return " User{" +
+                "netInfo=" + netInfo +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
     public InetInfo getNetInfo() {
         return netInfo;
     }

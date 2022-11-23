@@ -16,8 +16,8 @@ public class ChatServer extends UDPServer{
     }
 
     public static void main(String[] args) {
-        List<User> users = new ArrayList<User>() ;
-        List<Message> messages = new ArrayList<Message>();
+        List<User> users = new ArrayList<>() ;
+        List<Message> messages = new ArrayList<>();
         Conversation conversation = new Conversation(messages,users);
         ChatServer server = new ChatServer(conversation);
         try {
@@ -38,7 +38,7 @@ public class ChatServer extends UDPServer{
 
     public void onMessage() throws IOException {
         InetInfo userNetInfo  = new InetInfo(packet.getPort(),packet.getAddress());
-        User user = new User(userNetInfo,packet.getAddress().toString());
+        User user = new User(userNetInfo,packet.getAddress().toString()+":"+packet.getPort());
         String content = packet.getData();
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         String time = timeFormatter.format(packet.getTime());
@@ -51,7 +51,12 @@ public class ChatServer extends UDPServer{
     public void sendMessage(Message message, User user) throws IOException {
         int port = user.getNetInfo().getPort();
         InetAddress address = user.getNetInfo().getAddress();
-        String data = message.getUser().getName()+" : "+message.getContent() + "\n\t" + message.getTime();
+        String s = "$*$";
+        String data = message.getTime()+s+
+                      message.getUser().getNetInfo().getAddress()+s+
+                      message.getUser().getNetInfo().getPort()+s+
+                      message.getUser().getName()+s+
+                      message.getContent();
         super.sendPacket(port,address,data);
     }
 
