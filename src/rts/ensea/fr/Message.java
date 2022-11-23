@@ -41,4 +41,15 @@ public class Message {
     public void setTime(String time) {
         this.time = time;
     }
+
+    @Override
+    public String toString() {
+        return "\n Message{" +
+                "user=" + user +
+                ", content='" + content + '\'' +
+                ", time='" + time + '\'' +
+                ", reactions=" + reactions +
+                ", embed=" + embed +
+                '}';
+    }
 }

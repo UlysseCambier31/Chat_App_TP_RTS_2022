@@ -20,4 +20,11 @@ public class InetInfo {
         return address;
     }
 
+    @Override
+    public String toString() {
+        return "InetInfo{" +
+                "port=" + port +
+                ", address=" + address +
+                '}';
+    }
 }
