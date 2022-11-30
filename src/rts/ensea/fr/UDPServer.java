@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 /**
@@ -92,13 +93,14 @@ public class UDPServer {
      * @return the decoded packet information.
      */
     public DecodedPacket decodePacket() throws IOException {
-        int maxEncodedSize = 100*1024;
+        int maxEncodedSize = 1024;
         byte[] buffer = new byte[maxEncodedSize];
         DatagramPacket packet= new DatagramPacket(buffer,buffer.length);
         socket.receive(packet);
         InetAddress clientAddress = packet.getAddress();
         int clientPort = packet.getPort();
-        String dataReceived = new String(packet.getData(),packet.getOffset(), maxEncodedSize);
+        String dataReceived = new String(packet.getData(), StandardCharsets.UTF_8);
+        dataReceived = dataReceived.replace("\u0000","");
         LocalDateTime now = LocalDateTime.now();
         return new DecodedPacket(clientPort,clientAddress,dataReceived,now);
     }

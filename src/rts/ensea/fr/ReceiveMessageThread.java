@@ -7,6 +7,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,11 +32,11 @@ public class ReceiveMessageThread extends  java.lang.Thread{
     }
 
     public String awaitMessage() throws IOException {
-        int maxEncodedSize = 100*1024;
+        int maxEncodedSize = 1024;
         byte[] buffer = new byte[maxEncodedSize];
         DatagramPacket packet= new DatagramPacket(buffer,buffer.length);
         socket.receive(packet);
-        String serialized_data = new String(packet.getData(),packet.getOffset(), maxEncodedSize);
+        String serialized_data = new String(packet.getData(), StandardCharsets.UTF_8);
         Message message = new Message(new JSONObject(serialized_data));
         InetAddress senderIP = message.getUser().getNetInfo().getAddress();
         int senderPort = message.getUser().getNetInfo().getPort();
