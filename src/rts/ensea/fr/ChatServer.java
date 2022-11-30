@@ -44,8 +44,7 @@ public class ChatServer extends UDPServer{
         String content = packet.getData();
         Message received_message = new Message(new JSONObject(content));
         User user = new User(userNetInfo,received_message.getUser().getName());
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        String time = timeFormatter.format(packet.getTime());
+        String time = received_message.getTime();
         Message message = new Message(user,content,time);
         conversation.addUser(user);
         conversation.addMessage(message);
