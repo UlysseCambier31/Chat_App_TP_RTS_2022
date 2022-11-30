@@ -31,7 +31,7 @@ public class ReceiveMessageThread extends  java.lang.Thread{
     }
 
     public String awaitMessage() throws IOException {
-        int maxEncodedSize = 1024;
+        int maxEncodedSize = 100*1024;
         byte[] buffer = new byte[maxEncodedSize];
         DatagramPacket packet= new DatagramPacket(buffer,buffer.length);
         socket.receive(packet);

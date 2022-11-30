@@ -92,7 +92,7 @@ public class UDPServer {
      * @return the decoded packet information.
      */
     public DecodedPacket decodePacket() throws IOException {
-        int maxEncodedSize = 1024;
+        int maxEncodedSize = 100*1024;
         byte[] buffer = new byte[maxEncodedSize];
         DatagramPacket packet= new DatagramPacket(buffer,buffer.length);
         socket.receive(packet);

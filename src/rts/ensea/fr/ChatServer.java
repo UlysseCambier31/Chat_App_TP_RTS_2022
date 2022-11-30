@@ -53,7 +53,7 @@ public class ChatServer extends UDPServer{
         int port = user.getNetInfo().getPort();
         InetAddress address = user.getNetInfo().getAddress();
         String serialized_data = message.serializeInJSON().toString();
-        System.out.println(serialized_data);
+        //System.out.println(serialized_data);
         super.sendPacket(port,address,serialized_data);
     }
 
