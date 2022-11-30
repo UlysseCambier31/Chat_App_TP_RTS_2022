@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
@@ -20,8 +21,8 @@ public class ChatClient extends UDPClient {
         InetInfo netInfo = new InetInfo(socket.getLocalPort(),socket.getLocalAddress());
         User user = new User(netInfo,username);
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        LocalDate localDate = LocalDate.now();
-        Message message = new Message(user,content,timeFormatter.format(localDate));
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Message message = new Message(user,content,timeFormatter.format(localDateTime));
         String serialized_data = message.serializeInJSON().toString();
         super.send(serialized_data);
     }
