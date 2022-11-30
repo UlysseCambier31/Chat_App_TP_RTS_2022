@@ -39,7 +39,7 @@ public class InetInfo {
     public JSONObject serializeInJSON() {
         JSONObject jsonobject = new JSONObject();
         jsonobject.put("port",Integer.toString(port));
-        jsonobject.put("address",address.toString());
+        jsonobject.put("address",address.getHostAddress());
         return jsonobject;
     }
 
