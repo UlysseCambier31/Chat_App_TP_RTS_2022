@@ -14,8 +14,10 @@ import java.util.regex.Pattern;
 
 public class ReceiveMessageThread extends  java.lang.Thread{
     private DatagramSocket socket;
-    public ReceiveMessageThread(DatagramSocket socket) {
+    private String username;
+    public ReceiveMessageThread(DatagramSocket socket, String username) {
         this.socket = socket;
+        this.username = username;
     }
     public void run() {
         while (true) {
@@ -38,13 +40,7 @@ public class ReceiveMessageThread extends  java.lang.Thread{
         socket.receive(packet);
         String serialized_data = new String(packet.getData(), StandardCharsets.UTF_8);
         Message message = new Message(new JSONObject(serialized_data));
-        InetAddress senderIP = message.getUser().getNetInfo().getAddress();
-        int senderPort = message.getUser().getNetInfo().getPort();
-        if(!(InetAddress.getLocalHost().getHostAddress().equals(senderIP.getHostAddress())&&(socket.getLocalPort()==senderPort))){
-            System.out.println(InetAddress.getLocalHost().getHostAddress());
-            System.out.println(senderIP.getHostAddress());
-            System.out.println(socket.getLocalPort());
-            System.out.println(senderPort);
+        if(message.getUser().getName().equals(username)){
             return message.getUser().getName()+" : "+message.getContent()+"\n\t"+message.getTime();
         }
         return null;

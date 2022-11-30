@@ -5,12 +5,25 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 
 public class ChatClient extends UDPClient {
 
     public ChatClient(int port, InetAddress address) throws SocketException {
         super(port, address);
+    }
+
+    public void send(String content, String username) throws IOException {
+        InetInfo netInfo = new InetInfo(socket.getLocalPort(),socket.getLocalAddress());
+        User user = new User(netInfo,username);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDate localDate = LocalDate.now();
+        Message message = new Message(user,content,timeFormatter.format(localDate));
+        String serialized_data = message.serializeInJSON().toString();
+        super.send(serialized_data);
     }
 
     public static void main(String[] args) {
@@ -21,20 +34,30 @@ public class ChatClient extends UDPClient {
             e.printStackTrace();
         }
 
+        System.out.print("Entrez un nom d'utilisateur \n @");
+        BufferedReader usernamereader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+        String username = null;
+        try {
+            username = usernamereader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ReceiveMessageThread receiveMessageHandlerThread = new ReceiveMessageThread(client.getSocket(),username);
+        receiveMessageHandlerThread.start();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
-        String request;
+        String message;
         try {
             assert client != null;
-            ReceiveMessageThread receiveMessageHandlerThread = new ReceiveMessageThread(client.getSocket());
-            receiveMessageHandlerThread.start();
             while(true) {
-                request = reader.readLine();
-                client.send(request);
+                message = reader.readLine();
+                client.send(message, username);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public DatagramSocket getSocket() {
