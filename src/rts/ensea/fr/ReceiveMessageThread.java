@@ -40,8 +40,8 @@ public class ReceiveMessageThread extends  java.lang.Thread{
         socket.receive(packet);
         String serialized_data = new String(packet.getData(), StandardCharsets.UTF_8);
         Message message = new Message(new JSONObject(serialized_data));
-        if(message.getUser().getName().equals(username)){
-            return message.getUser().getName()+" : "+message.getContent()+"\n\t"+message.getTime();
+        if(!message.getUser().getName().equals(username)){
+            return "@"+message.getUser().getName()+" : "+message.getContent()+"\n\t"+message.getTime();
         }
         return null;
     }
