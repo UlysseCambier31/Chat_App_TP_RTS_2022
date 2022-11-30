@@ -42,7 +42,7 @@ public class ReceiveMessageThread extends  java.lang.Thread{
         int senderPort = message.getUser().getNetInfo().getPort();
         if(!(InetAddress.getLocalHost().getHostAddress().equals(senderIP.getHostAddress())&&(socket.getLocalPort()==senderPort))){
             System.out.println(InetAddress.getLocalHost().getHostAddress());
-            System.out.println(InetAddress.getLocalHost().getHostAddress());
+            System.out.println(senderIP.getHostAddress());
             System.out.println(socket.getLocalPort());
             System.out.println(senderPort);
             return message.getUser().getName()+" : "+message.getContent()+"\n\t"+message.getTime();
