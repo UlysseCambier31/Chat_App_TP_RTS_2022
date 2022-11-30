@@ -1,5 +1,7 @@
 package rts.ensea.fr;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -39,8 +41,9 @@ public class ChatServer extends UDPServer{
 
     public void onMessage() throws IOException {
         InetInfo userNetInfo  = new InetInfo(packet.getPort(),packet.getAddress());
-        User user = new User(userNetInfo,packet.getAddress().toString()+":"+packet.getPort());
         String content = packet.getData();
+        Message received_message = new Message(new JSONObject(content));
+        User user = new User(userNetInfo,received_message.getUser().getName());
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         String time = timeFormatter.format(packet.getTime());
         Message message = new Message(user,content,time);
