@@ -103,9 +103,9 @@ public class UDPServer {
         return new DecodedPacket(clientPort,clientAddress,dataReceived,now);
     }
 
-    public void sendPacket(int port,InetAddress address,String data) throws IOException {
-        byte[] buffer = data.getBytes();
-        DatagramPacket answer = new DatagramPacket(buffer, buffer.length, address, port);
+    public void sendPacket(int port,InetAddress address,String content) throws IOException {
+        byte [] data = content.getBytes();
+        DatagramPacket answer = new DatagramPacket(data, data.length, address, port);
         socket.send(answer);
     }
 
