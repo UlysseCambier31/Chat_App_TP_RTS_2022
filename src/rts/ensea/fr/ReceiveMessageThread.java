@@ -1,10 +1,13 @@
 package rts.ensea.fr;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,12 +35,12 @@ public class ReceiveMessageThread extends  java.lang.Thread{
         byte[] buffer = new byte[maxEncodedSize];
         DatagramPacket packet= new DatagramPacket(buffer,buffer.length);
         socket.receive(packet);
-        String data = new String(packet.getData(),packet.getOffset(), maxEncodedSize);
-        String[] tmp = data.split("\\$\\*\\$");
-        InetAddress senderIP = InetAddress.getByName(tmp[1].replace("/",""));
-        int senderPort = Integer.parseInt(tmp[2]);
+        String serialized_data = new String(packet.getData(),packet.getOffset(), maxEncodedSize);
+        Message message = new Message(new JSONObject(serialized_data));
+        InetAddress senderIP = message.getUser().getNetInfo().getAddress();
+        int senderPort = message.getUser().getNetInfo().getPort();
         if(!(InetAddress.getLocalHost().getHostAddress().equals(senderIP.getHostAddress())&&(socket.getLocalPort()==senderPort))){
-            return tmp[3]+" : "+tmp[4]+"\n\t"+tmp[0];
+            return message.getUser().getName()+" : "+message.getContent()+"\n\t"+message.getTime();
         }
         return null;
     }

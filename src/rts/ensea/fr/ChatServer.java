@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class ChatServer extends UDPServer{
@@ -51,13 +52,9 @@ public class ChatServer extends UDPServer{
     public void sendMessage(Message message, User user) throws IOException {
         int port = user.getNetInfo().getPort();
         InetAddress address = user.getNetInfo().getAddress();
-        String s = "$*$";
-        String data = message.getTime()+s+
-                      message.getUser().getNetInfo().getAddress()+s+
-                      message.getUser().getNetInfo().getPort()+s+
-                      message.getUser().getName()+s+
-                      message.getContent();
-        super.sendPacket(port,address,data);
+        String serialized_data = message.serializeInJSON().toString();
+        System.out.println(serialized_data);
+        super.sendPacket(port,address,serialized_data);
     }
 
     public void sendAll(Message message) throws IOException {

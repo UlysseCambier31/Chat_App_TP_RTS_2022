@@ -1,6 +1,9 @@
 package rts.ensea.fr;
 
+import org.json.JSONObject;
+
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class User {
     private InetInfo netInfo;
@@ -10,6 +13,10 @@ public class User {
         this.netInfo = netInfo;
         this.name = name;
     }
+    public User(JSONObject jsonObject) throws UnknownHostException {
+        this.netInfo = new InetInfo(new JSONObject(jsonObject.getString("InetInfo")));
+        this.name = jsonObject.getString("name");
+    }
 
     @Override
     public String toString() {
@@ -17,6 +24,13 @@ public class User {
                 "netInfo=" + netInfo +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public JSONObject serializeInJSON() {
+        JSONObject jsonobject = new JSONObject();
+        jsonobject.put("InetInfo",netInfo.serializeInJSON().toString());
+        jsonobject.put("name",name);
+        return jsonobject;
     }
 
     public InetInfo getNetInfo() {
