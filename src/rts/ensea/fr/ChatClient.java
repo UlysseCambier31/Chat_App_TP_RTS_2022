@@ -47,6 +47,12 @@ public class ChatClient extends UDPClient {
         ReceiveMessageThread receiveMessageHandlerThread = new ReceiveMessageThread(client.getSocket(),username);
         receiveMessageHandlerThread.start();
 
+        try {
+            client.send("Salut c'est "+username+" ! Je viens de rentrer dans le serveur !", username);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
         String message;
         try {
