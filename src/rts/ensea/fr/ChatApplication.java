@@ -97,9 +97,6 @@ public class ChatApplication extends Application {
                             e.printStackTrace();
                         }
                         userInputField.setText("");
-                        /*Text message = new Text(text);
-                        message.setWrappingWidth(150);
-                        conversation.getChildren().add(message);*/
                     }
                 });
 
