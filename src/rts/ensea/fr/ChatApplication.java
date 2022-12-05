@@ -58,7 +58,7 @@ public class ChatApplication extends Application {
 
         ChatClient client = null;
         try {
-            client = new ChatClient(8080, InetAddress.getByName("10.10.25.25"));
+            client = new ChatClient(8080, InetAddress.getByName("192.168.1.36"));
         } catch(ArrayIndexOutOfBoundsException | UnknownHostException | SocketException e) {
             e.printStackTrace();
         }

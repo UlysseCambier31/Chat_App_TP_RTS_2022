@@ -70,11 +70,11 @@ public class ReceiveMessageThread extends  java.lang.Thread{
                                 if(finalMessage[0].equals("own")){
                                     contentGuiObject.setStyle("-fx-font-size : 12px;-fx-background-radius: 0 0 18 18; -fx-border-radius: 0 0 18 18;-fx-text-inner-color:#0084ff;");
                                     contentGuiObject.setFill(Color.WHITE);
-                                    hbox.setBackground(new Background(new BackgroundFill(Paint.valueOf("#0084ff"),null,null)));
+                                    hbox.setBackground(new Background(new BackgroundFill(Paint.valueOf("#0084ff"),new CornerRadii(18),null)));
                                 } else {
                                     contentGuiObject.setStyle("-fx-font-size : 12px;-fx-background-radius: 0 0 18 18; -fx-border-radius: 0 0 18 18;-fx-text-inner-color:#e6ecf0;");
                                     contentGuiObject.setFill(Color.BLACK);
-                                    hbox.setBackground(new Background(new BackgroundFill(Paint.valueOf("#e6ecf0"),null,null)));
+                                    hbox.setBackground(new Background(new BackgroundFill(Paint.valueOf("#e6ecf0"),new CornerRadii(18),null)));
                                 }
                                     contentGuiObject.setWrappingWidth(150);
                                     hbox.setAlignment(Pos.BOTTOM_RIGHT);
