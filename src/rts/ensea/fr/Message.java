@@ -10,12 +10,31 @@ public class Message {
     private User user;
     private String content;
     private String time;
+    private Command command;
     private List<String> reactions;
     private File embed;
 
     public Message(User user, String content, String time) {
         this.user = user;
+        this.command = new Command(null,null);
         this.content = content;
+        this.time = time;
+        this.reactions = null;
+        this.embed = null;
+    }
+
+    public Command getCommand() {
+        return command;
+    }
+
+    public void setCommand(Command command) {
+        this.command = command;
+    }
+
+    public Message(User user, Command command, String time) {
+        this.user = user;
+        this.command = command;
+        this.content = null;
         this.time = time;
         this.reactions = null;
         this.embed = null;
@@ -24,6 +43,7 @@ public class Message {
         this.user = new User(new JSONObject(jsonObject.getString("user")));
         this.content = jsonObject.getString("content");
         this.time = jsonObject.getString("time");
+        this.command = new Command(new JSONObject(jsonObject.getString("command")));
         this.reactions = null;
         this.embed = null;
     }
@@ -68,6 +88,7 @@ public class Message {
         jsonobject.put("user",user.serializeInJSON().toString());
         jsonobject.put("content",content);
         jsonobject.put("time",time);
+        jsonobject.put("command",command.serializeInJSON().toString());
         return jsonobject;
     }
 

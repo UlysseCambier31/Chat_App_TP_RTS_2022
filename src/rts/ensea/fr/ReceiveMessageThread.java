@@ -1,5 +1,8 @@
 package rts.ensea.fr;
 
+import javafx.application.Platform;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -15,10 +18,18 @@ import java.util.regex.Pattern;
 public class ReceiveMessageThread extends  java.lang.Thread{
     private DatagramSocket socket;
     private String username;
+    private VBox conversationGuiObject;
     public ReceiveMessageThread(DatagramSocket socket, String username) {
         this.socket = socket;
         this.username = username;
+        this.conversationGuiObject = null;
     }
+    public ReceiveMessageThread(DatagramSocket socket, String username,VBox conversationGuiObject) {
+        this.socket = socket;
+        this.username = username;
+        this.conversationGuiObject = conversationGuiObject;
+    }
+
     public void run() {
         while (true) {
             String message = null;
@@ -28,7 +39,20 @@ public class ReceiveMessageThread extends  java.lang.Thread{
                 e.printStackTrace();
             }
             if(message!=null) {
-                System.out.println(message);
+                if (conversationGuiObject==null) {
+                    System.out.println(message);
+                } else {
+                    String finalMessage = message;
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            Text messageGuiObject = new Text(finalMessage);
+                            messageGuiObject.setWrappingWidth(150);
+                            conversationGuiObject.getChildren().add(messageGuiObject);
+                        }
+                    });
+                }
+
             }
         }
     }
@@ -40,9 +64,8 @@ public class ReceiveMessageThread extends  java.lang.Thread{
         socket.receive(packet);
         String serialized_data = new String(packet.getData(), StandardCharsets.UTF_8);
         Message message = new Message(new JSONObject(serialized_data));
-        if(!message.getUser().getName().equals(username)){
-            return "@"+message.getUser().getName()+" : "+message.getContent()+"\n\t"+message.getTime();
-        }
-        return null;
+        //if(!message.getUser().getName().equals(username) && conversationUiObject==null){
+        return "@"+message.getUser().getName()+" : "+message.getContent()+"\n"+message.getTime();
+
     }
 }
