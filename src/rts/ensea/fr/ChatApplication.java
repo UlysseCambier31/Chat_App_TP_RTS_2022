@@ -58,7 +58,7 @@ public class ChatApplication extends Application {
 
         ChatClient client = null;
         try {
-            client = new ChatClient(8080, InetAddress.getByName("192.168.1.36"));
+            client = new ChatClient(8080, InetAddress.getByName("10.10.25.25"));
         } catch(ArrayIndexOutOfBoundsException | UnknownHostException | SocketException e) {
             e.printStackTrace();
         }
@@ -88,6 +88,18 @@ public class ChatApplication extends Application {
                 Button sendButton = new Button();
                 sendButton.setText("➤");
                 sendButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String text = userInputField.getText();
+                        try {
+                            finalClient.send(text, username);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        userInputField.setText("");
+                    }
+                });
+                userInputField.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
                         String text = userInputField.getText();
