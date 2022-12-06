@@ -43,11 +43,17 @@ public class ChatServer extends UDPServer{
         InetInfo userNetInfo  = new InetInfo(packet.getPort(),packet.getAddress());
         String content = packet.getData();
         Message received_message = new Message(new JSONObject(content));
-        User user = new User(userNetInfo,received_message.getUser().getName());
-        Message message = new Message(user,received_message.getContent(),received_message.getTime());
+        User user = new User(userNetInfo, received_message.getUser().getName());
         conversation.addUser(user);
-        conversation.addMessage(message);
-        sendAll(message);
+        /*if(!conversation.isBanned(received_message.getUser())) {
+            if (received_message.getCommand() != "") {
+                received_message.getCommand().execute(this);
+            } else {*/
+                Message message = new Message(user, received_message.getContent(), received_message.getTime());
+                conversation.addMessage(message);
+                sendAll(message);
+         /*   }
+        }*/
     }
 
     public void sendMessage(Message message, User user) throws IOException {
@@ -62,5 +68,18 @@ public class ChatServer extends UDPServer{
         for(int i=0;i<conversation.getUsers().size();i++){
             sendMessage(message,conversation.getUsers().get(i));
         }
+    }
+
+    //à faire
+    public void sendConversation(String username) throws IOException {
+        User user = conversation.getUser(username);
+        if (user!=null){
+            for (int i=0;i<conversation.getMessages().size();i++){
+                sendMessage(conversation.getMessages().get(i),user);
+            }
+        }
+    }
+    public void banUser(String username){
+        conversation.addBannedUser(conversation.getUser(username));
     }
 }
