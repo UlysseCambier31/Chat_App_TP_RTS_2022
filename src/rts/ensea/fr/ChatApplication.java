@@ -72,6 +72,7 @@ public class ChatApplication extends Application {
                 ReceiveMessageThread receiveMessageHandlerThread = new ReceiveMessageThread(finalClient.getSocket(),username,conversation,scroll);
                 receiveMessageHandlerThread.start();
                 try {
+                    finalClient.connect(username);
                     finalClient.send("Hi I'm "+username+" ! I've just arrived in the server !", username);
                 } catch (IOException e) {
                     e.printStackTrace();

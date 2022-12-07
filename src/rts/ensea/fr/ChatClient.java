@@ -29,6 +29,14 @@ public class ChatClient extends UDPClient {
         super.send(serialized_payload);
     }
 
+    public void connect(String username) throws IOException {
+        InetInfo netInfo = new InetInfo(socket.getLocalPort(),socket.getLocalAddress());
+        User user = new User(netInfo,username);
+        Payload payload = new Payload("connect","",user);
+        String serialized_payload = payload.serializeInJSON().toString();
+        super.send(serialized_payload);
+    }
+
     public static void main(String[] args) {
         ChatClient client = null;
         try {
