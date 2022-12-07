@@ -2,6 +2,7 @@ package rts.ensea.fr;
 
 import javafx.application.Platform;
 import javafx.geometry.Pos;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -23,15 +24,18 @@ public class ReceiveMessageThread extends  java.lang.Thread{
     private DatagramSocket socket;
     private String username;
     private VBox conversationGuiObject;
+    private ScrollPane scrollGuiObject;
     public ReceiveMessageThread(DatagramSocket socket, String username) {
         this.socket = socket;
         this.username = username;
         this.conversationGuiObject = null;
+        this.scrollGuiObject = null;
     }
-    public ReceiveMessageThread(DatagramSocket socket, String username,VBox conversationGuiObject) {
+    public ReceiveMessageThread(DatagramSocket socket, String username,VBox conversationGuiObject, ScrollPane scrollGuiObject) {
         this.socket = socket;
         this.username = username;
         this.conversationGuiObject = conversationGuiObject;
+        this.scrollGuiObject = scrollGuiObject;
     }
 
     public void run() {
@@ -63,7 +67,7 @@ public class ReceiveMessageThread extends  java.lang.Thread{
                                     Text nameGuiObject = new Text(finalMessage[1]);
                                     nameGuiObject.setStyle("-fx-font-size : 8px;");
                                     nameGuiObject.setFill(Color.BLACK);
-                                    nameGuiObject.setWrappingWidth(150);
+                                    nameGuiObject.setWrappingWidth(200);
                                     conversationGuiObject.getChildren().add(nameGuiObject);
 
                                     Text contentGuiObject = new Text(finalMessage[2]);
@@ -77,7 +81,7 @@ public class ReceiveMessageThread extends  java.lang.Thread{
                                     contentGuiObject.setFill(Color.BLACK);
                                     hbox.setBackground(new Background(new BackgroundFill(Paint.valueOf("#e6ecf0"),new CornerRadii(5),null)));
                                 }
-                                    contentGuiObject.setWrappingWidth(150);
+                                    contentGuiObject.setWrappingWidth(200);
                                     hbox.setAlignment(Pos.BOTTOM_RIGHT);
                                     hbox.getChildren().add(contentGuiObject);
                                     conversationGuiObject.getChildren().add(hbox);
@@ -85,9 +89,10 @@ public class ReceiveMessageThread extends  java.lang.Thread{
                                     Text timeGuiObject = new Text(finalMessage[3]);
                                     timeGuiObject.setStyle("-fx-font-size : 8px;");
                                     timeGuiObject.setFill(Color.BLACK);
-                                    timeGuiObject.setWrappingWidth(150);
+                                    timeGuiObject.setWrappingWidth(200);
                                     conversationGuiObject.getChildren().add(timeGuiObject);
-
+                                    scrollGuiObject.layout();
+                                    scrollGuiObject.setVvalue(1.0);
                             }
                         });
                     }
