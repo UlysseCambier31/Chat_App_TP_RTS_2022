@@ -42,43 +42,43 @@ public class ChatServer extends UDPServer{
     public void onMessage() throws IOException {
         InetInfo userNetInfo  = new InetInfo(packet.getPort(),packet.getAddress());
         String content = packet.getData();
-        Payload payload_received = new Payload(new JSONObject(content));
-        if (payload_received.getOperation().equals("connect")) {
-            conversation.addUser(payload_received.getUser());
-            sendConversation(payload_received.getUser());
-        }
-        else if (payload_received.getOperation().equals("send")){
-            Message received_message = new Message(new JSONObject(payload_received.getArgs()));
-            User user = new User(userNetInfo, received_message.getUser().getName());
-            conversation.addUser(user);
-            Message message = new Message(user, received_message.getContent(), received_message.getTime());
-            Payload payload = new Payload("",message.serializeInJSON().toString(),user);// Why not user = server ?
-            conversation.addMessage(message);
-            sendAll(payload);
-        }
+        Message received_message = new Message(new JSONObject(content));
+        User user = new User(userNetInfo, received_message.getUser().getName());
+        conversation.addUser(user);
+        /*if(!conversation.isBanned(received_message.getUser())) {
+            if (received_message.getCommand() != "") {
+                received_message.getCommand().execute(this);
+            } else {*/
+                Message message = new Message(user, received_message.getContent(), received_message.getTime());
+                conversation.addMessage(message);
+                sendAll(message);
+         /*   }
+        }*/
     }
 
-    public void sendPayload(Payload payload, User user) throws IOException {
+    public void sendMessage(Message message, User user) throws IOException {
         int port = user.getNetInfo().getPort();
         InetAddress address = user.getNetInfo().getAddress();
-        String serialized_data = payload.serializeInJSON().toString();
+        String serialized_data = message.serializeInJSON().toString();
         //System.out.println(serialized_data);
         super.sendPacket(port,address,serialized_data);
     }
 
-    public  void sendConversation(User user) throws IOException {
-        for(int i=0;i<conversation.getMessages().size();i++){
-            Payload payload = new Payload("",conversation.getMessages().get(i).serializeInJSON().toString(),user);
-            sendPayload(payload,user);// Why not user = server ?
-        }
-    }
-
-    public void sendAll(Payload payload) throws IOException {
+    public void sendAll(Message message) throws IOException {
         for(int i=0;i<conversation.getUsers().size();i++){
-            sendPayload(payload,conversation.getUsers().get(i));
+            sendMessage(message,conversation.getUsers().get(i));
         }
     }
 
+    //à faire
+    public void sendConversation(String username) throws IOException {
+        User user = conversation.getUser(username);
+        if (user!=null){
+            for (int i=0;i<conversation.getMessages().size();i++){
+                sendMessage(conversation.getMessages().get(i),user);
+            }
+        }
+    }
     public void banUser(String username){
         conversation.addBannedUser(conversation.getUser(username));
     }

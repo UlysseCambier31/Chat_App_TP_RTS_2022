@@ -48,6 +48,7 @@ public class ReceiveMessageThread extends  java.lang.Thread{
                     e.printStackTrace();
                 }
                 if (message != null) {
+
                     System.out.println(message);
                 }
             } else {
@@ -106,8 +107,8 @@ public class ReceiveMessageThread extends  java.lang.Thread{
         DatagramPacket packet= new DatagramPacket(buffer,buffer.length);
         socket.receive(packet);
         String serialized_data = new String(packet.getData(), StandardCharsets.UTF_8);
-        Payload payload = new Payload(new JSONObject(serialized_data));
-        Message message = new Message(new JSONObject(payload.getArgs()));
+        Message message = new Message(new JSONObject(serialized_data));
+        //if(!message.getUser().getName().equals(username))
         return "@"+message.getUser().getName()+" : "+message.getContent()+"\n"+message.getTime();
     }
 
@@ -117,8 +118,7 @@ public class ReceiveMessageThread extends  java.lang.Thread{
         DatagramPacket packet= new DatagramPacket(buffer,buffer.length);
         socket.receive(packet);
         String serialized_data = new String(packet.getData(), StandardCharsets.UTF_8);
-        Payload payload = new Payload(new JSONObject(serialized_data));
-        Message message = new Message(new JSONObject(payload.getArgs()));
+        Message message = new Message(new JSONObject(serialized_data));
         if(message.getUser().getName().equals(username)) {
             return new String[] {"own",message.getUser().getName(),message.getContent(),message.getTime()};
         }  else {
