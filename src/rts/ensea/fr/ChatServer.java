@@ -50,7 +50,7 @@ public class ChatServer extends UDPServer{
         else if (payload_received.getOperation().equals("send")){
             Message received_message = new Message(new JSONObject(payload_received.getArgs()));
             User user = new User(userNetInfo, received_message.getUser().getName());
-            conversation.addUser(user);
+            //conversation.addUser(user);
             Message message = new Message(user, received_message.getContent(), received_message.getTime());
             Payload payload = new Payload("",message.serializeInJSON().toString(),user);// Why not user = server ?
             conversation.addMessage(message);
@@ -67,9 +67,9 @@ public class ChatServer extends UDPServer{
     }
 
     public  void sendConversation(User user) throws IOException {
-        for(int i=0;i<conversation.getMessages().size();i++){
-            Payload payload = new Payload("",conversation.getMessages().get(i).serializeInJSON().toString(),user);
-            sendPayload(payload,user);// Why not user = server ?
+            for (int i = 0; i < conversation.getMessages().size(); i++) {
+                Payload payload = new Payload("", conversation.getMessages().get(i).serializeInJSON().toString(), user);
+                sendPayload(payload, user);
         }
     }
 
