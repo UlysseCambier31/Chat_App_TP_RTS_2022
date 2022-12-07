@@ -9,10 +9,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -32,7 +29,7 @@ import java.util.List;
 public class ChatApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        /*test*/
         primaryStage.setTitle("Join Chat");
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -66,10 +63,12 @@ public class ChatApplication extends Application {
         joinbutton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                ScrollPane scroll = new ScrollPane();
                 VBox conversation = new VBox(10);
+                scroll.setContent(conversation);
                 conversation.setAlignment(Pos.BOTTOM_LEFT);
                 String username = userTextField.getText();
-                ReceiveMessageThread receiveMessageHandlerThread = new ReceiveMessageThread(finalClient.getSocket(),username,conversation);
+                ReceiveMessageThread receiveMessageHandlerThread = new ReceiveMessageThread(finalClient.getSocket(),username,conversation,scroll);
                 receiveMessageHandlerThread.start();
                 try {
                     finalClient.send("Hi I'm "+username+" ! I've just arrived in the server !", username);
@@ -116,10 +115,13 @@ public class ChatApplication extends Application {
                 hbBtn2.setAlignment(Pos.CENTER);
                 hbBtn2.getChildren().add(sendButton);
 
+                GridPane gridUserInput = new GridPane();
+                gridUserInput.setAlignment(Pos.CENTER);
+                gridUserInput.add(userInputField,0,0);
+                gridUserInput.add(hbBtn2,1,0);
 
-                secondGrid.add(conversation,0,0);
-                secondGrid.add(userInputField, 0, 1);
-                secondGrid.add(hbBtn2,1,1);
+                secondGrid.add(scroll,0,0);
+                secondGrid.add(gridUserInput, 0, 1);
                 Scene secondScene = new Scene(secondGrid, 300, 500);
 
 
