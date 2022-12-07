@@ -23,8 +23,10 @@ public class ChatClient extends UDPClient {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         LocalDateTime localDateTime = LocalDateTime.now();
         Message message = new Message(user, content, timeFormatter.format(localDateTime));
-        String serialized_data = message.serializeInJSON().toString();
-        super.send(serialized_data);
+        String serialized_message = message.serializeInJSON().toString();
+        Payload payload = new Payload("send",serialized_message,user);
+        String serialized_payload = payload.serializeInJSON().toString();
+        super.send(serialized_payload);
     }
 
     public static void main(String[] args) {
