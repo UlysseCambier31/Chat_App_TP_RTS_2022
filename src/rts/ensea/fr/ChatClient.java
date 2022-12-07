@@ -22,14 +22,7 @@ public class ChatClient extends UDPClient {
         User user = new User(netInfo,username);
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         LocalDateTime localDateTime = LocalDateTime.now();
-        Message message;
-        if (content.charAt(0)=='\\') {
-             String[] tmp = content.substring(1).split(" ");
-             message = new Message(user,new Command(tmp[0],Arrays.copyOfRange(tmp,1,tmp.length)),timeFormatter.format(localDateTime));
-        }
-        else {
-             message = new Message(user, content, timeFormatter.format(localDateTime));
-        }
+        Message message = new Message(user, content, timeFormatter.format(localDateTime));
         String serialized_data = message.serializeInJSON().toString();
         super.send(serialized_data);
     }
