@@ -29,7 +29,7 @@ import java.util.List;
 public class ChatApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        /*test*/
         primaryStage.setTitle("Join Chat");
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
