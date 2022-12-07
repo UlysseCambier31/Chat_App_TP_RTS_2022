@@ -63,6 +63,7 @@ public class ChatApplication extends Application {
         joinbutton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                primaryStage.close();
                 ScrollPane scroll = new ScrollPane();
                 VBox conversation = new VBox(10);
                 scroll.setContent(conversation);
@@ -122,7 +123,7 @@ public class ChatApplication extends Application {
 
                 secondGrid.add(scroll,0,0);
                 secondGrid.add(gridUserInput, 0, 1);
-                Scene secondScene = new Scene(secondGrid, 300, 500);
+                Scene secondScene = new Scene(secondGrid, 330, 500);
 
 
                 // New window (Stage)

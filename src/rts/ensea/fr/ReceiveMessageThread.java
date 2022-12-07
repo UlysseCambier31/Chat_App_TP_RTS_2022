@@ -65,7 +65,7 @@ public class ReceiveMessageThread extends  java.lang.Thread{
                             public void run() {
 
                                     Text nameGuiObject = new Text(finalMessage[1]);
-                                    nameGuiObject.setStyle("-fx-font-size : 8px;");
+                                    nameGuiObject.setStyle("-fx-font-size : 12px;");
                                     nameGuiObject.setFill(Color.BLACK);
                                     nameGuiObject.setWrappingWidth(200);
                                     conversationGuiObject.getChildren().add(nameGuiObject);
@@ -73,11 +73,11 @@ public class ReceiveMessageThread extends  java.lang.Thread{
                                     Text contentGuiObject = new Text(finalMessage[2]);
                                     HBox hbox = new HBox(10);
                                 if(finalMessage[0].equals("own")){
-                                    contentGuiObject.setStyle("-fx-font-size : 12px;-fx-background-radius: 0 0 18 18; -fx-border-radius: 0 0 18 18;-fx-text-inner-color:#0084ff;");
+                                    contentGuiObject.setStyle("-fx-font-size : 16px;");
                                     contentGuiObject.setFill(Color.WHITE);
                                     hbox.setBackground(new Background(new BackgroundFill(Paint.valueOf("#0084ff"),new CornerRadii(5),null)));
                                 } else {
-                                    contentGuiObject.setStyle("-fx-font-size : 12px;-fx-background-radius: 0 0 18 18; -fx-border-radius: 0 0 18 18;-fx-text-inner-color:#e6ecf0;");
+                                    contentGuiObject.setStyle("-fx-font-size : 16px;");
                                     contentGuiObject.setFill(Color.BLACK);
                                     hbox.setBackground(new Background(new BackgroundFill(Paint.valueOf("#e6ecf0"),new CornerRadii(5),null)));
                                 }
@@ -87,7 +87,7 @@ public class ReceiveMessageThread extends  java.lang.Thread{
                                     conversationGuiObject.getChildren().add(hbox);
 
                                     Text timeGuiObject = new Text(finalMessage[3]);
-                                    timeGuiObject.setStyle("-fx-font-size : 8px;");
+                                    timeGuiObject.setStyle("-fx-font-size : 12px;");
                                     timeGuiObject.setFill(Color.BLACK);
                                     timeGuiObject.setWrappingWidth(200);
                                     conversationGuiObject.getChildren().add(timeGuiObject);

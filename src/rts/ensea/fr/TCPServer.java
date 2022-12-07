@@ -29,6 +29,13 @@ public class TCPServer{
     }
 
     /**
+     * Constructs a tcp server listening on the port 8080.
+     */
+    public TCPServer() {
+        this(8080);
+    }
+
+    /**
      * Start a tcp server on port provided by args[0].
      * @param args usual arguments of a main function.
      */
@@ -48,12 +55,7 @@ public class TCPServer{
         }
     }
 
-    /**
-     * Constructs a tcp server listening on the default port 8080.
-     */
-    public TCPServer() {
-        this.port = 8080;
-    }
+
 
     public void launch() throws IOException {
         socket = new ServerSocket(port);
@@ -68,8 +70,8 @@ public class TCPServer{
     public void TCPHandler() throws IOException {
         while(!socket.isClosed()){
             Socket connectionSocket = socket.accept();
-            ConnectionThread Thread = new ConnectionThread(connectionSocket);
-            Thread.start();
+            ConnectionThread thread = new ConnectionThread(connectionSocket);
+            thread.start();
         }
     }
 
