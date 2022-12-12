@@ -6,12 +6,14 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * <p>
  * This class represents a client for sending tcp packets.
  * The client uses a socket to send packet to an host:port chosen by the user.
  * This class heavily rely on the Socket class.
- *
- * Example : client = new TCPClient(port,ipAddress);
- *
+ * </p>
+ * <p>Example :</p>
+ * <code> client = new TCPClient(port,ipAddress);
+ * </code>
  * @author Ulysse Cambier, Thibaut Lefebvre
  *
  * @see Socket

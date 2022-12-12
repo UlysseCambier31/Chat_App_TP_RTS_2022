@@ -9,11 +9,15 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 /**
+ * <p>
  * This class represents a server for receiving udp datagram packets.
  * The server uses a socket which is listening on a port chosen by the user.
  * This class heavily rely on DatagramPacket and DatagramSocket classes.
- *
- * Example : UDPServer server = new UDPServer(8080); Which is equivalent to UDPServer server = new UDPServer(); as default issued port will be 8080.
+ *</p>
+ * <p>Example :</p>
+ * <code>
+ * UDPServer server = new UDPServer(8080); Which is equivalent to UDPServer server = new UDPServer(); as default issued port will be 8080.
+ * </code>
  *
  * @author Ulysse Cambier, Thibaut Lefebvre
  *
@@ -37,27 +41,7 @@ public class UDPServer {
      * Constructs an udp server listening on the default port 8080.
      */
     public UDPServer() {
-        this.port = 8080;
-    }
-
-    /**
-     * Start a UDP server on port provided by args[0].
-     * @param args usual arguments of a main function.
-     */
-    public static void main(String[] args) {
-        int p;
-        try {
-            p = Integer.parseInt(args[0]);
-        } catch(ArrayIndexOutOfBoundsException e) {
-            System.out.println("wrn: No value provided for port, using 8080");
-            p=8080;
-        }
-        UDPServer server = new UDPServer(p);
-        try {
-            server.launch();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this(8080);
     }
 
     /**
@@ -83,11 +67,6 @@ public class UDPServer {
     }
 
     /**
-     * Allow the user to stop the UDP Server from a UDPServer object.
-     */
-    public void stop(){ socket.close(); }
-
-    /**
      * Decode the packet read on the socket.
      * @throws IOException throws IOException.
      * @return the decoded packet information.
@@ -105,6 +84,14 @@ public class UDPServer {
         return new DecodedPacket(clientPort,clientAddress,dataReceived,now);
     }
 
+    /**
+     * Send a packet over the socket.
+     * @param port the port of the receiver.
+     * @param address the address of the receiver.
+     * @param content the content of the packet.
+     * @throws IOException throws IOException.
+     * @see InetAddress
+     */
     public void sendPacket(int port,InetAddress address,String content) throws IOException {
         byte [] data = content.getBytes();
         DatagramPacket answer = new DatagramPacket(data, data.length, address, port);
@@ -117,5 +104,25 @@ public class UDPServer {
     @Override
     public String toString() {
         return "Server is closed : "+socket.isClosed() + "/ Listening on port "+port;
+    }
+
+    /**
+     * Start a UDP server on port provided by args[0].
+     * @param args usual arguments of a main function.
+     */
+    public static void main(String[] args) {
+        int p;
+        try {
+            p = Integer.parseInt(args[0]);
+        } catch(ArrayIndexOutOfBoundsException e) {
+            System.out.println("wrn: No value provided for port, using 8080");
+            p=8080;
+        }
+        UDPServer server = new UDPServer(p);
+        try {
+            server.launch();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

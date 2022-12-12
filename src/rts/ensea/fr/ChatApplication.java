@@ -21,18 +21,33 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <p>
+ * This class represents a client for the chat GUI application.
+ * This class uses JavaFX.
+ * The class extends from Application.
+ *</p>
+ *
+ * @author Ulysse Cambier, Thibaut Lefebvre
+ *
+ * @see Application
+ */
 public class ChatApplication extends Application {
+    /**
+     * Run the JavaFX thread when the method start() is called.
+     * Allow user to log, connect and send message.
+     * Reception is handeled by ReceiveMessageThread.
+     * @see ReceiveMessageThread
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         File configFile = new File("config.ini");
-        ApplicationConfiguration appConfig = new ApplicationConfiguration(configFile);
+        ApplicationConfiguration appConfig = new ApplicationConfiguration(configFile); // Loading configuration of the application from config.ini file.
 
         primaryStage.setTitle("Join Chat");
         GridPane grid = new GridPane();

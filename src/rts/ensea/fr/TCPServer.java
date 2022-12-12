@@ -5,12 +5,14 @@ import java.net.*;
 import java.time.LocalDateTime;
 
 /**
+ * <p>
  * This class represents a server for receiving tcp packets.
  * The server uses a socket which is listening on a port chosen by the user.
  * This class heavily rely on ServerSocket and Socket classes.
- *
- * Example : TCPServer server = new TCPServer(8080); Which is equivalent to TCPServer server = new TCPServer(); as default issued port will be 8080.
- *
+ * </p>
+ * <p>Example :</p>
+ * <code>TCPServer server = new TCPServer(8080); Which is equivalent to TCPServer server = new TCPServer(); as default issued port will be 8080.
+ * </code>
  * @author Ulysse Cambier, Thibaut Lefebvre
  *
  * @see ServerSocket
@@ -36,27 +38,10 @@ public class TCPServer{
     }
 
     /**
-     * Start a tcp server on port provided by args[0].
-     * @param args usual arguments of a main function.
+     * Launch the server.
+     * Create a socket and launch the TCPHandler.
+     * @throws IOException throws IOException.
      */
-    public static void main(String[] args) {
-        int p;
-        try {
-            p = Integer.parseInt(args[0]);
-        } catch(ArrayIndexOutOfBoundsException e) {
-            System.out.println("wrn: No value provided for port, using 8080");
-            p=8080;
-        }
-        TCPServer server = new TCPServer(p);
-        try {
-            server.launch();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
     public void launch() throws IOException {
         socket = new ServerSocket(port);
         TCPHandler();
@@ -76,15 +61,30 @@ public class TCPServer{
     }
 
     /**
-     * Allow the user to stop the TCP Server from a TCPServer object.
-     */
-    public void stop() throws IOException { socket.close(); }
-
-    /**
      * @return TCPServer state
      */
     @Override
     public String toString() {
         return "Server is closed : "+socket.isClosed() + "/ Listening on port "+port;
+    }
+
+    /**
+     * Start a tcp server on port provided by args[0].
+     * @param args usual arguments of a main function.
+     */
+    public static void main(String[] args) {
+        int p;
+        try {
+            p = Integer.parseInt(args[0]);
+        } catch(ArrayIndexOutOfBoundsException e) {
+            System.out.println("wrn: No value provided for port, using 8080");
+            p=8080;
+        }
+        TCPServer server = new TCPServer(p);
+        try {
+            server.launch();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

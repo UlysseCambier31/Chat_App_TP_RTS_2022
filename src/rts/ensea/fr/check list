@@ -1,0 +1,14 @@
+1) Ecrire les JavaDoc
+    -Ecrire le commentaire
+    -Chercher les param
+    -Chercher les return
+    -Chercher les see
+    -chercher les throws
+2) Corriger les constructeurs avec this()
+3) Remettre dans l'ordre les methodes
+    -constructeurs
+    -getter setter
+    -reste
+    -to string
+    -main
+4)Découper le code.
