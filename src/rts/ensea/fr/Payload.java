@@ -5,9 +5,9 @@ import org.json.JSONObject;
 import java.net.UnknownHostException;
 
 public class Payload {
-    private String operation;
-    private String args;
-    private User user;
+    protected String operation;
+    protected String args;
+    protected User user;
 
     public Payload(String operation, String args, User user) {
         this.operation = operation;

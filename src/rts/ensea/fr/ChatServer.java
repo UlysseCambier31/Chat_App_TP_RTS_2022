@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+import java.security.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -12,17 +13,30 @@ import java.util.List;
 
 public class ChatServer extends UDPServer{
     private Conversation conversation;
+    private PrivateKey serverPrivateKey;
+    private PublicKey serverPublicKey;
+    private PublicKey[] usersPublicKeys;
 
-    public ChatServer( Conversation conversation) {
+    public ChatServer( Conversation conversation) throws NoSuchAlgorithmException {
         super();
         this.conversation = conversation;
+        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+        keyGen.initialize(2048);
+        KeyPair pair = keyGen.generateKeyPair();
+        this.serverPrivateKey = pair.getPrivate();
+        this.serverPublicKey = pair.getPublic();
     }
 
     public static void main(String[] args) {
         List<User> users = new ArrayList<>() ;
         List<Message> messages = new ArrayList<>();
         Conversation conversation = new Conversation(messages,users);
-        ChatServer server = new ChatServer(conversation);
+        ChatServer server = null;
+        try {
+            server = new ChatServer(conversation);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         try {
             server.launch();
         } catch (IOException e) {
@@ -46,9 +60,19 @@ public class ChatServer extends UDPServer{
         if (payload_received.getOperation().equals("send")){
             Message received_message = new Message(new JSONObject(payload_received.getArgs()));
             User user = new User(userNetInfo, received_message.getUser().getName());
-            conversation.addUser(user);
+            //conversation.addUser(user);
             Message message = new Message(user, received_message.getContent(), received_message.getTime());
             Payload payload = new Payload("",message.serializeInJSON().toString(),user);// Why not user = server ?
+            conversation.addMessage(message);
+            sendAll(payload);
+        }else if (payload_received.getOperation().equals("connect")) {
+            User user = new User(userNetInfo,payload_received.getUser().getName());
+            conversation.addUser(user);
+            InetInfo serverNetInfo = new InetInfo(socket.getLocalPort(),socket.getLocalAddress());
+            User server = new User(serverNetInfo,"App");
+            Message message = new Message(server,"User @"+user.getName()+" has connected to the server!",payload_received.getArgs());
+            Payload payload = new Payload("",message.serializeInJSON().toString(),server);
+            sendConversation(user);
             conversation.addMessage(message);
             sendAll(payload);
         }
@@ -65,6 +89,14 @@ public class ChatServer extends UDPServer{
     public void sendAll(Payload payload) throws IOException {
         for(int i=0;i<conversation.getUsers().size();i++){
             sendPayload(payload,conversation.getUsers().get(i));
+        }
+    }
+
+    public void sendConversation(User user) throws IOException {
+        for(int i=0;i<conversation.getMessages().size();i++){
+            Message message = conversation.getMessages().get(i);
+            Payload payload = new Payload("",message.serializeInJSON().toString(),message.getUser());
+            sendPayload(payload,user);
         }
     }
 
