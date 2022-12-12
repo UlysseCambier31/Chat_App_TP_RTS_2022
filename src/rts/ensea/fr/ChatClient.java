@@ -59,7 +59,7 @@ public class ChatClient extends UDPClient {
         receiveMessageHandlerThread.start();
 
         try {
-            client.send("\\get_channel");
+            //client.send("\\get_channel");
             client.send("Salut c'est "+username+" ! Je viens de rentrer dans le serveur !", username);
         } catch (IOException e) {
             e.printStackTrace();

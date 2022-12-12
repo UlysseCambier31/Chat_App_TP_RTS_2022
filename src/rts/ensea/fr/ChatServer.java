@@ -13,18 +13,10 @@ import java.util.List;
 
 public class ChatServer extends UDPServer{
     private Conversation conversation;
-    private PrivateKey serverPrivateKey;
-    private PublicKey serverPublicKey;
-    private PublicKey[] usersPublicKeys;
 
-    public ChatServer( Conversation conversation) throws NoSuchAlgorithmException {
+    public ChatServer( Conversation conversation)  {
         super();
         this.conversation = conversation;
-        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-        keyGen.initialize(2048);
-        KeyPair pair = keyGen.generateKeyPair();
-        this.serverPrivateKey = pair.getPrivate();
-        this.serverPublicKey = pair.getPublic();
     }
 
     public static void main(String[] args) {
@@ -32,11 +24,7 @@ public class ChatServer extends UDPServer{
         List<Message> messages = new ArrayList<>();
         Conversation conversation = new Conversation(messages,users);
         ChatServer server = null;
-        try {
-            server = new ChatServer(conversation);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        server = new ChatServer(conversation);
         try {
             server.launch();
         } catch (IOException e) {

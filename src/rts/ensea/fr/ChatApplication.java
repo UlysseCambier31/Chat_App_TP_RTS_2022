@@ -19,6 +19,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -29,7 +30,10 @@ import java.util.List;
 public class ChatApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        /*test*/
+
+        File configFile = new File("config.ini");
+        ApplicationConfiguration appConfig = new ApplicationConfiguration(configFile);
+
         primaryStage.setTitle("Join Chat");
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -55,8 +59,8 @@ public class ChatApplication extends Application {
 
         ChatClient client = null;
         try {
-            client = new ChatClient(8080, InetAddress.getByName("10.10.24.233"));
-        } catch(ArrayIndexOutOfBoundsException | UnknownHostException | SocketException e) {
+            client = new ChatClient(appConfig.getPort(), appConfig.getServerAddress());
+        } catch(ArrayIndexOutOfBoundsException | SocketException e) {
             e.printStackTrace();
         }
         ChatClient finalClient = client;
@@ -124,7 +128,7 @@ public class ChatApplication extends Application {
 
                 secondGrid.add(scroll,0,0);
                 secondGrid.add(gridUserInput, 0, 1);
-                Scene secondScene = new Scene(secondGrid, 330, 500);
+                Scene secondScene = new Scene(secondGrid, appConfig.getChatWidth(), appConfig.getChatHeight());
 
 
                 // New window (Stage)
@@ -140,7 +144,7 @@ public class ChatApplication extends Application {
             }
         });
 
-        Scene scene = new Scene(grid, 300, 250);
+        Scene scene = new Scene(grid, appConfig.getJoinWidth(), appConfig.getJoinHeight());
         primaryStage.setScene(scene);
         primaryStage.show();
     }
