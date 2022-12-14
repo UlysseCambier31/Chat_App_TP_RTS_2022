@@ -73,9 +73,16 @@ Serialization in JSON is automated by the data structure of the differents objec
 
 <p align="center"><img align="center" width="400" src="/img/protoc1.png"></p>
 
+
+###  2.1 Command line application
+
+The application command line was supported by [ChatClient](/src/rts/ensea/fr/ChatClient.java), but this code is now deprecated and non fonctionning. Futur commit may correct it.
+
 ## 2.UDP Server/Client
 
 ## 3. TCP Server/Client
+
+There's an error in this piece of code. The connexion is reset each time a message is sent. This is not the way TCP has to be used. Futur commit may correct it.
 
 ## 4. Appendix
 
