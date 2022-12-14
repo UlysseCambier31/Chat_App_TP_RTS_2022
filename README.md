@@ -50,11 +50,28 @@ A payload is constructed in the following way:
 This way, the user can ask the server to make differents action for him.
 There's 3 Operation supported :
 1. *Receive :* In usual case, when the [Server](/src/rts/ensea/fr/ChatServer.java) sends a [Message](/src/rts/ensea/fr/Message.java) to a [Client](/src/rts/ensea/fr/ChatApplication.java), the operation flag is the following <code>""</code>. In that case, the [Payload](/src/rts/ensea/fr/Payload.java) is intended to be of the form <code>"" | Serialized Message | User</code>. The [Message](/src/rts/ensea/fr/Message.java) is then just printed on the [Client](/src/rts/ensea/fr/ChatApplication.java) screen
-2. *Send :* In usual case, when a [Client](/src/rts/ensea/fr/ChatApplication.java) sends a [Message](/src/rts/ensea/fr/Message.java) to the [Server](/src/rts/ensea/fr/ChatServer.java), the operation flag is the following <code>"send"</code>. In that case, the [Payload](/src/rts/ensea/fr/Payload.java) is intended to be of the form <code>"send" | Serialized Message | User</code>. The [Message](/src/rts/ensea/fr/Message.java) is added to the chat [Conversation](/src/rts/ensea/fr/Conversation.java). The [Message](/src/rts/ensea/fr/Message.java) is then broadcasted by the [Server](/src/rts/ensea/fr/ChatServer.java) to all [Users](/src/rts/ensea/fr/User.java).  
+
+<p align="center"><img align="center" width="400" src="/img/protoc2.png"></p>
+
+2. *Send :* In usual case, when a [Client](/src/rts/ensea/fr/ChatApplication.java) sends a [Message](/src/rts/ensea/fr/Message.java) to the [Server](/src/rts/ensea/fr/ChatServer.java), the operation flag is the following <code>"send"</code>. In that case, the [Payload](/src/rts/ensea/fr/Payload.java) is intended to be of the form <code>"send" | Serialized Message | User</code>. The [Message](/src/rts/ensea/fr/Message.java) is added to the chat [Conversation](/src/rts/ensea/fr/Conversation.java). The [Message](/src/rts/ensea/fr/Message.java) is then broadcasted by the [Server](/src/rts/ensea/fr/ChatServer.java) to all [Users](/src/rts/ensea/fr/User.java). 
+
+
+<p align="center"><img align="center" width="400" src="/img/protoc1.png"></p>
+
 3. *Connect :* When a [Client](/src/rts/ensea/fr/ChatApplication.java) sends a connection [Payload](/src/rts/ensea/fr/Payload.java) to the [Server](/src/rts/ensea/fr/ChatServer.java), the operation flag is the following <code>"connect"</code>. In that case, the [Payload](/src/rts/ensea/fr/Payload.java) is intended to be of the form <code>"connect" | Formated time of connection request | User</code>. A welcomming [Message](/src/rts/ensea/fr/Message.java) is added to the chat [Conversation](/src/rts/ensea/fr/Conversation.java) by the [Server](/src/rts/ensea/fr/ChatServer.java). The [Message](/src/rts/ensea/fr/Message.java) is then broadcasted by the [Server](/src/rts/ensea/fr/ChatServer.java) to all [Users](/src/rts/ensea/fr/User.java). The [Users](/src/rts/ensea/fr/User.java) is also registered in the [Conversation](/src/rts/ensea/fr/Conversation.java).
 
 
-#### 1.1.3 Code structure
+<p align="center"><img align="center" width="400" src="/img/protoc0.png"></p>
+
+
+#### 1.1.3 data structure
+
+Packet exchanged between [Clients](/src/rts/ensea/fr/ChatApplication.java) and the [Server](/src/rts/ensea/fr/ChatServer.java) contain serialized encapsuled data.
+
+Serialization in JSON is automated by the data structure of the differents objects. A full encapsulated [Payload](/src/rts/ensea/fr/Payload.java) containing a [Message](/src/rts/ensea/fr/Message.java).
+<p align="center"><code>[ Send operation flag | Serialized message [ User [ NetInfo [ Port | IPv4Address ] | Name] | Content | Formatted time of sending] | User [ NetInfo [ Port | IPv4Address ] | Name] ]</code></p>
+
+<p align="center"><img align="center" width="400" src="/img/protoc1.png"></p>
 
 ## 2.UDP Server/Client
 
