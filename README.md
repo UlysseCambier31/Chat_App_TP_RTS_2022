@@ -25,7 +25,31 @@ This is the main result of our work. We have made a working UDP GUI Application 
 
 #### 1.1.1  How to use the GUI Application
 
+To use the GUI Application, you need to edit a [config.ini](config.ini) file (there's an exemple in the root of this github) so that the port parameter and the ip parameter corresponds to the port and ip of the server. After having launched the ChatServer on the same LAN as the clients, you can launch ChatApplication to launch the GUI Application.
+<ul>
+<li><code>ChatApplication</code><p>Without arguments, the config.ini file will be opened from the current directory.</p></li>
+<li><code>ChatApplication "path\to\config.ini"</code><p>In this cas the config.ini file will be opened from the provided path.</p></li>
+</ul>
+
+The ChatServer always sets up the 8080 port.
+
+When launched, the application will open a Joining windows in which you can enter your username. Then when you click on Join, the chat conversation window will open and you will be able to send messages on the conversation. Your messages will be hilighted in blue and others messages will be in gray.
+
 #### 1.1.2 The Applicative Protocol
+
+Packet exchanged between [Clients](/src/rts/ensea/fr/ChatApplication.java) and the [Server](/src/rts/ensea/fr/ChatServer.java) contain serialized encapsuled data.
+
+To communicate with the server, and vice-versa, the client sends serialized [Payload](/src/rts/ensea/fr/Payload.java) on the datagram socket. The [Payload](/src/rts/ensea/fr/Payload.java) is an encapsulation of the JSON serialization as a part of our own Applicative Protocol.
+
+A payload is constructed in the following way:
+<code>Operation flag | Operation arguments | User</code>
+
+This way, the user can ask the server to make differents action for him.
+There's 3 Operation supported :
+1. *Receive :* In usual case, when the [Server](/src/rts/ensea/fr/ChatServer.java) sends a [Message](/src/rts/ensea/fr/Message.java) to a [Client](/src/rts/ensea/fr/ChatApplication.java), the operation flag is the following <code>""</code>. In that case, the [Payload](/src/rts/ensea/fr/Payload.java) is intended to be of the form <code>"" | Serialized Message | User</code>. The [Message](/src/rts/ensea/fr/Message.java) is then just printed on the [Client](/src/rts/ensea/fr/ChatApplication.java) screen
+2. *Send :* In usual case, when a [Client](/src/rts/ensea/fr/ChatApplication.java) sends a [Message](/src/rts/ensea/fr/Message.java) to the [Server](/src/rts/ensea/fr/ChatServer.java), the operation flag is the following <code>"send"</code>. In that case, the [Payload](/src/rts/ensea/fr/Payload.java) is intended to be of the form <code>"send" | Serialized Message | User</code>. The [Message](/src/rts/ensea/fr/Message.java) is added to the chat [Conversation](/src/rts/ensea/fr/Conversation.java). The [Message](/src/rts/ensea/fr/Message.java) is then broadcasted by the [Server](/src/rts/ensea/fr/ChatServer.java) to all [Users](/src/rts/ensea/fr/User.java).  
+3. *Connect :* When a [Client](/src/rts/ensea/fr/ChatApplication.java) sends a connection [Payload](/src/rts/ensea/fr/Payload.java) to the [Server](/src/rts/ensea/fr/ChatServer.java), the operation flag is the following <code>"connect"</code>. In that case, the [Payload](/src/rts/ensea/fr/Payload.java) is intended to be of the form <code>"connect" | Formated time of connection request | User</code>. A welcomming [Message](/src/rts/ensea/fr/Message.java) is added to the chat [Conversation](/src/rts/ensea/fr/Conversation.java) by the [Server](/src/rts/ensea/fr/ChatServer.java). The [Message](/src/rts/ensea/fr/Message.java) is then broadcasted by the [Server](/src/rts/ensea/fr/ChatServer.java) to all [Users](/src/rts/ensea/fr/User.java). The [Users](/src/rts/ensea/fr/User.java) is also registered in the [Conversation](/src/rts/ensea/fr/Conversation.java).
+
 
 #### 1.1.3 Code structure
 
