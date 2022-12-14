@@ -22,6 +22,7 @@ Date : 2022
 ###  1.1 GUI Application
 
 This is the main result of our work. We have made a working UDP GUI Application exchanging on LAN messages.
+<p align="center"><img align="center" height="400" src="/img/chatapp.png"></p>
 
 #### 1.1.1  How to use the GUI Application
 
@@ -62,3 +63,26 @@ There's 3 Operation supported :
 ## 4. Appendix
 
 ### 4.1 Step-by-step guide to start the GUI App
+
+This is a step-by-step guide on how to use the GUI Application.
+
+1. To begin with, we advise you to check on you server computer the IPv4 address it has on the LAN network on which you would like to run the application.
+You can do this by using command <code>ipconfig</code> on Windows or <code>ifconfig</code> on Linux.
+<p align="center"><img align="center" height="400" src="/img/ipconfig.jpg"></p>
+
+2. Then you have to create or modify the [config.ini](config.ini) on your client computer so that the parameter IPv4Address matches the IPv4Address of the server. You also need this computer to be connected in the same LAN network.
+<p align="center"><img align="center" height="400" src="/img/configini.jpg"></p>
+
+3. Now you can launch the [ChatServer](/src/rts/ensea/fr/ChatServer.java) class on your server computer. There's no need to provide arguments for this program.
+<p align="center"><img align="center" height="100" src="/img/Run Chat server.jpg"></p>
+
+4. Then you can launch the [ChatApplication](/src/rts/ensea/fr/ChatApplication.java) class on your client computer. On Intelliji, there's no need to provide arguments for this program. However, in command line, you may have to provide a path to the config.ini file as a paramter of the program.
+<p align="center"><img align="center" height="100" src="/img/Run Gui App.jpg"></p>
+
+5. You can start as many [Client](/src/rts/ensea/fr/ChatApplication.java) as you like.
+
+6. Each [Client](/src/rts/ensea/fr/ChatApplication.java) will prompt you to enter a username before connecting to the LAN [Conversation](/src/rts/ensea/fr/Conversation.java).
+<p align="center"><img align="center" height="400" src="/img/join window.jpg"></p>
+
+7. You will then be able to see the current state of the conversation and send message to all the other users.
+<p align="center"><img align="center" height="400" src="/img/Conversation.jpg"></p>
