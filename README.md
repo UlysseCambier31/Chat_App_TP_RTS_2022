@@ -74,10 +74,10 @@ You can do this by using command <code>ipconfig</code> on Windows or <code>ifcon
 <p align="center"><img align="center" height="400" src="/img/configini.jpg"></p>
 
 3. Now you can launch the [ChatServer](/src/rts/ensea/fr/ChatServer.java) class on your server computer. There's no need to provide arguments for this program.
-<p align="center"><img align="center" height="100" src="/img/Run Chat server.jpg"></p>
+<p align="center"><img align="center" height="50" src="/img/Run Chat server.jpg"></p>
 
 4. Then you can launch the [ChatApplication](/src/rts/ensea/fr/ChatApplication.java) class on your client computer. On Intelliji, there's no need to provide arguments for this program. However, in command line, you may have to provide a path to the config.ini file as a paramter of the program.
-<p align="center"><img align="center" height="100" src="/img/Run Gui App.jpg"></p>
+<p align="center"><img align="center" height="50" src="/img/Run Gui App.jpg"></p>
 
 5. You can start as many [Client](/src/rts/ensea/fr/ChatApplication.java) as you like.
 
