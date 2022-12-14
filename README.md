@@ -35,6 +35,8 @@ The ChatServer always sets up the 8080 port.
 
 When launched, the application will open a Joining windows in which you can enter your username. Then when you click on Join, the chat conversation window will open and you will be able to send messages on the conversation. Your messages will be hilighted in blue and others messages will be in gray.
 
+[Still in the gray ? Here a step-by-step guide](#41-step-by-step-guide-to-start-the-gui-app)
+
 #### 1.1.2 The Applicative Protocol
 
 Packet exchanged between [Clients](/src/rts/ensea/fr/ChatApplication.java) and the [Server](/src/rts/ensea/fr/ChatServer.java) contain serialized encapsuled data.
@@ -56,3 +58,7 @@ There's 3 Operation supported :
 ## 2.UDP Server/Client
 
 ## 3. TCP Server/Client
+
+## 4. Appendix
+
+### 4.1 Step-by-step guide to start the GUI App
